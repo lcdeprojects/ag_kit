@@ -1,0 +1,9 @@
+.git
+.env
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+db.sqlite3
+.DS_Store

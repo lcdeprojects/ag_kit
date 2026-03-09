@@ -1,0 +1,92 @@
+{% extends 'clinic/base.html' %}
+
+{% block content %}
+<div class="row mb-4 align-items-end">
+    <div class="col-md-8">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-2">
+                <li class="breadcrumb-item"><a href="{% url 'appointment-list' %}" class="text-decoration-none">Consultas</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Detalhes</li>
+            </ol>
+        </nav>
+        <h1 class="fw-extrabold mb-0">Registro Clínico</h1>
+        <p class="text-muted mb-0">Detalhes completos da consulta de {{ object.patient.name }}.</p>
+    </div>
+    <div class="col-md-4 text-md-end mt-3 mt-md-0">
+        <a href="{% url 'appointment-update' object.pk %}" class="btn btn-celeste text-primary px-4 me-2">
+            <i data-lucide="edit-3" class="me-2"></i> Editar
+        </a>
+        <a href="{% url 'appointment-list' %}" class="btn btn-white border px-4">Voltar</a>
+    </div>
+</div>
+
+<div class="row g-4">
+    <!-- Main Record -->
+    <div class="col-lg-8">
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header bg-white border-bottom py-4 px-4">
+                <h5 class="fw-bold mb-0">Notas Exame & Clínica</h5>
+            </div>
+            <div class="card-body p-4">
+                <div class="mb-4">
+                    <h6 class="text-muted small text-uppercase fw-bold mb-3" style="letter-spacing: 0.05em;">Notas Clínicas</h6>
+                    <div class="p-4 bg-slate-50 rounded-4 border border-slate-100" style="min-height: 150px; white-space: pre-wrap;">
+                        {{ object.clinical_notes|default:"Nenhuma nota registrada." }}
+                    </div>
+                </div>
+                <div class="mb-0">
+                    <h6 class="text-muted small text-uppercase fw-bold mb-3" style="letter-spacing: 0.05em;">Prescrição / Recomendações</h6>
+                    <div class="p-4 bg-celeste-light rounded-4 border border-primary border-opacity-10 text-primary" style="min-height: 120px; white-space: pre-wrap;">
+                        {{ object.prescription|default:"Nenhuma prescrição registrada." }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Patient & Info Sidebar -->
+    <div class="col-lg-4">
+        <!-- Patient Info -->
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-body p-4 text-center">
+                <div class="bg-celeste-light p-4 rounded-circle d-inline-block mb-3">
+                    <i data-lucide="user" class="text-primary" style="width: 40px; height: 40px;"></i>
+                </div>
+                <h4 class="fw-bold mb-1">{{ object.patient.name }}</h4>
+                <p class="text-muted small mb-3">Paciente</p>
+                <div class="d-grid gap-2">
+                    <a href="{% url 'patient-history' object.patient.pk %}" class="btn btn-primary btn-sm rounded-pill py-2">
+                        Ver Histórico Completo
+                    </a>
+                </div>
+            </div>
+            <div class="card-footer bg-slate-50 border-0 p-4">
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <label class="text-muted small fw-bold text-uppercase">Paciente</label>
+                        <p class="fs-5 fw-bold">{{ object.patient.name }}</p>
+                    </div>
+                    <div class="col-md-6 text-md-end">
+                        <label class="text-muted small fw-bold text-uppercase">Data e Hora</label>
+                        <p class="fs-5 fw-bold">{{ object.date|date:"d/M/Y - H:i" }}</p>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between mb-3 border-top pt-3">
+                    <span class="text-muted small fw-bold">Responsável</span>
+                    <span class="fw-bold fs-6">{% if object.user %}{{ object.user.get_full_name|default:object.user.username }}{% else %}Não Atribuído{% endif %}</span>
+                </div>
+                <div class="d-flex justify-content-between mb-3">
+                    <span class="text-muted small fw-bold">Status</span>
+                    <span class="badge {% if object.status == 'completed' %}bg-success{% else %}bg-warning text-dark{% endif %} bg-opacity-10 small">
+                        {{ object.get_status_display }}
+                    </span>
+                </div>
+                <div class="d-flex justify-content-between pt-3 border-top">
+                    <span class="text-primary fw-bold">Peso Registrado</span>
+                    <span class="fw-extrabold fs-5">{% if object.weight %}{{ object.weight }} kg{% else %}--{% endif %}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

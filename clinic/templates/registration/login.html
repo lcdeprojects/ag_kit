@@ -1,0 +1,105 @@
+{% extends 'clinic/base.html' %}
+{% load crispy_forms_tags static %}
+
+{% block title %}Login - Aliada{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center align-items-center min-vh-100">
+    <div class="col-md-5 col-lg-4">
+        <div class="text-center mb-4">
+            <h1 class="navbar-brand border-0 p-0 mb-2 d-flex justify-content-center align-items-center gap-3" style="font-size: 2.5rem;">
+                <img src="{% static 'clinic/images/logo.png' %}" alt="Logo Aliada" style="height: 56px;">
+                <div class="fw-extrabold" style="color: #6376aa; letter-spacing: -0.05em;">Aliada</div>
+            </h1>
+            <p class="text-muted fw-500">Acesse sua conta para gerenciar a clínica</p>
+        </div>
+
+        <div class="card border-0 shadow-lg p-4 p-md-5" style="border-radius: 28px;">
+            <div class="card-body p-0">
+                <form method="post" class="needs-validation" novalidate>
+                    {% csrf_token %}
+                    
+                    <div class="mb-4">
+                        <label class="form-label small fw-bold text-slate-600 mb-2">Usuário</label>
+                        <div class="position-relative">
+                            <span class="position-absolute top-50 start-0 translate-middle-y ps-3 text-slate-400">
+                                <i data-lucide="user" style="width: 18px; height: 18px;"></i>
+                            </span>
+                            <input type="text" name="username" class="form-control ps-5" placeholder="Digite seu usuário" required autofocus>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label small fw-bold text-slate-600 mb-2">Senha</label>
+                        <div class="position-relative">
+                            <span class="position-absolute top-50 start-0 translate-middle-y ps-3 text-slate-400">
+                                <i data-lucide="lock" style="width: 18px; height: 18px;"></i>
+                            </span>
+                            <input type="password" name="password" class="form-control ps-5" placeholder="••••••••" required>
+                        </div>
+                    </div>
+
+                    {% if form.errors %}
+                    <div class="alert alert-danger bg-danger bg-opacity-10 border-0 text-danger small py-3 rounded-4 mb-4">
+                        <i data-lucide="alert-circle" class="me-2" style="width: 16px;"></i>
+                        Usuário ou senha incorretos.
+                    </div>
+                    {% endif %}
+
+                    <button type="submit" class="btn btn-primary w-100 py-3 fw-bold d-flex align-items-center justify-content-center">
+                        Entrar na Plataforma
+                        <i data-lucide="arrow-right" class="ms-2" style="width: 18px;"></i>
+                    </button>
+                    
+                    <div class="mt-4 text-center">
+                        <a href="#" class="text-decoration-none small fw-600 text-primary">Esqueceu sua senha?</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <div class="mt-5 text-center px-4">
+            <p class="small text-slate-400">
+                © 2026 Aliada Health Systems. <br>
+                Segurança e privacidade para seus pacientes.
+            </p>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Prevent sidebar and header from showing on login page */
+    .sidebar-wrapper, .d-md-none.bg-white.border-bottom {
+        display: none !important;
+    }
+    .main-content {
+        margin-left: 0 !important;
+        width: 100% !important;
+        padding: 0 !important; /* Remove padding to ensure true centering */
+        background: radial-gradient(circle at top right, var(--celeste-light) 0%, var(--slate-50) 100%);
+    }
+    .main-content > .container-fluid {
+        padding: 0 !important;
+    }
+    body {
+        overflow: hidden;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Simple micro-animation for input fields
+        const inputs = document.querySelectorAll('.form-control');
+        inputs.forEach(input => {
+            input.addEventListener('focus', () => {
+                input.parentElement.querySelector('i').classList.add('text-primary');
+                input.parentElement.querySelector('i').style.transform = 'scale(1.1)';
+            });
+            input.addEventListener('blur', () => {
+                input.parentElement.querySelector('i').classList.remove('text-primary');
+                input.parentElement.querySelector('i').style.transform = 'scale(1)';
+            });
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,143 @@
+{% extends 'clinic/base.html' %}
+
+{% block title %}Consultas - Aliada{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-5">
+    <div>
+        <h1 class="fw-extrabold mb-1">Consultas</h1>
+        <p class="text-muted">Histórico e agendamentos de consultas.</p>
+    </div>
+    <a href="{% url 'appointment-create' %}" class="btn btn-primary d-flex align-items-center">
+        <i data-lucide="plus-circle" class="me-2"></i> Agendar Consulta
+    </a>
+</div>
+
+<!-- Filtros e Pesquisa -->
+<div class="card border-0 shadow-sm mb-4">
+    <div class="card-body p-4">
+        <form method="get" class="row g-3 align-items-end">
+            <!-- Busca por Paciente -->
+            <div class="col-md-4">
+                <label for="searchQuery" class="form-label text-muted small fw-bold">Buscar Paciente</label>
+                <div class="input-group shadow-sm rounded-3 overflow-hidden border">
+                    <span class="input-group-text bg-white border-0 text-muted"><i data-lucide="search" style="width: 18px;"></i></span>
+                    <input type="text" class="form-control border-0 shadow-none ps-0" id="searchQuery" name="q" value="{{ current_q }}" placeholder="Nome do paciente...">
+                </div>
+            </div>
+            <!-- Filtro por Data -->
+            <div class="col-md-3">
+                <label for="dateFilter" class="form-label text-muted small fw-bold">Data da Consulta</label>
+                <div class="input-group shadow-sm rounded-3 overflow-hidden border">
+                    <span class="input-group-text bg-white border-0 text-muted"><i data-lucide="calendar" style="width: 18px;"></i></span>
+                    <input type="date" class="form-control border-0 shadow-none ps-0" id="dateFilter" name="date" value="{{ current_date }}">
+                </div>
+            </div>
+            <!-- Filtro por Responsável -->
+            <div class="col-md-3">
+                <label for="userFilter" class="form-label text-muted small fw-bold">Responsável</label>
+                <div class="input-group shadow-sm rounded-3 overflow-hidden border">
+                    <span class="input-group-text bg-white border-0 text-muted"><i data-lucide="user" style="width: 18px;"></i></span>
+                    <select class="form-select border-0 shadow-none ps-0" id="userFilter" name="user">
+                        <option value="">Todos os usuários</option>
+                        {% for u in users %}
+                        <option value="{{ u.id }}" {% if current_user == u.id|stringformat:"s" %}selected{% endif %}>{{ u.get_full_name|default:u.username }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <!-- Botões de Ação -->
+            <div class="col-md-2 d-flex gap-2">
+                <button type="submit" class="btn btn-primary flex-grow-1 shadow-sm fw-bold">
+                    Pesquisar
+                </button>
+                {% if current_q or current_date or current_user %}
+                <a href="{% url 'appointment-list' %}" class="btn btn-white border shadow-sm" title="Limpar Filtros">
+                    <i data-lucide="x" class="text-danger" style="width: 18px;"></i>
+                </a>
+                {% endif %}
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card border-0 shadow-sm overflow-hidden">
+    <div class="table-responsive">
+        <table class="table table-hover mb-0">
+            <thead>
+                <tr>
+                    <th class="ps-4">Paciente</th>
+                    <th>Responsável</th>
+                    <th>Data & Hora</th>
+                    <th>Status</th>
+                    <th class="pe-4 text-end">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for appointment in appointments %}
+                <tr>
+                    <td class="ps-4 fw-bold">
+                        <a href="{% url 'appointment-detail' appointment.pk %}" class="text-primary text-decoration-none">
+                            {{ appointment.patient.name }}
+                        </a>
+                    </td>
+                    <td class="text-slate-600">{% if appointment.user %}{{ appointment.user.get_full_name|default:appointment.user.username }}{% else %}-{% endif %}</td>
+                    <td class="fw-medium text-slate-600">{{ appointment.date|date:"d/m/Y H:i" }}</td>
+                    <td>
+                        <span class="badge {% if appointment.status == 'completed' %}bg-success{% elif appointment.status == 'scheduled' %}bg-info{% else %}bg-danger{% endif %} bg-opacity-10">
+                            {{ appointment.get_status_display }}
+                        </span>
+                    </td>
+                    <td class="pe-4 text-end">
+                        <div class="btn-group shadow-sm rounded-3 overflow-hidden">
+                            <a href="{% url 'appointment-detail' appointment.pk %}" class="btn btn-sm btn-white border-0 py-2 px-3" title="Ver Prontuário">
+                                <i data-lucide="eye" class="text-info" style="width: 16px;"></i>
+                            </a>
+                            <a href="{% url 'appointment-update' appointment.pk %}" class="btn btn-sm btn-white border-0 py-2 px-3">
+                                <i data-lucide="edit-3" class="text-primary" style="width: 16px;"></i>
+                            </a>
+                            <a href="{% url 'appointment-delete' appointment.pk %}" class="btn btn-sm btn-white border-0 py-2 px-3">
+                                <i data-lucide="trash-2" class="text-danger" style="width: 16px;"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center py-5 text-muted">Nenhuma consulta encontrada.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% if is_paginated %}
+    <div class="card-footer bg-white border-top py-3">
+        <nav>
+            <ul class="pagination justify-content-center mb-0">
+                {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link border-0 text-slate-600" href="?page={{ page_obj.previous_page_number }}{% if current_q %}&q={{ current_q }}{% endif %}{% if current_date %}&date={{ current_date }}{% endif %}{% if current_user %}&user={{ current_user }}{% endif %}">
+                        <i data-lucide="chevron-left" style="width: 18px;"></i>
+                    </a>
+                </li>
+                {% endif %}
+                
+                {% for num in page_obj.paginator.page_range %}
+                <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+                    <a class="page-link border-0 {% if page_obj.number == num %}bg-primary text-white rounded-3 shadow-sm{% else %}text-slate-600{% endif %}" href="?page={{ num }}{% if current_q %}&q={{ current_q }}{% endif %}{% if current_date %}&date={{ current_date }}{% endif %}{% if current_user %}&user={{ current_user }}{% endif %}">{{ num }}</a>
+                </li>
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link border-0 text-slate-600" href="?page={{ page_obj.next_page_number }}{% if current_q %}&q={{ current_q }}{% endif %}{% if current_date %}&date={{ current_date }}{% endif %}{% if current_user %}&user={{ current_user }}{% endif %}">
+                        <i data-lucide="chevron-right" style="width: 18px;"></i>
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

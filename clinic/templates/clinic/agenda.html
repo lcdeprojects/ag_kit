@@ -1,0 +1,86 @@
+{% extends 'clinic/base.html' %}
+
+{% block title %}Agenda Google - Aliada{% endblock %}
+
+{% block content %}
+<div class="row mb-5">
+    <div class="col-md-12">
+        <div class="d-flex justify-content-between align-items-start">
+            <div>
+                <h1 class="fw-extrabold mb-1">Agenda Google</h1>
+                <p class="text-muted fs-5">Sincronização direta com seus compromissos externos.</p>
+            </div>
+            <div class="bg-celeste-light p-3 rounded-4 shadow-sm">
+                <i data-lucide="calendar" class="text-primary" style="width: 32px; height: 32px;"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card border-0 shadow-sm mb-4">
+    <div class="card-body p-4">
+
+        <div id='calendar-container' style="min-height: 700px;">
+            <div id='calendar'></div>
+        </div>
+    </div>
+</div>
+
+<style>
+    :root {
+        --fc-border-color: #f1f5f9;
+        --fc-today-bg-color: rgba(178, 255, 255, 0.2);
+        --fc-button-bg-color: #0ea5e9;
+        --fc-button-border-color: #0ea5e9;
+        --fc-button-hover-bg-color: #0284c7;
+        --fc-button-active-bg-color: #0369a1;
+    }
+    .fc { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .fc-toolbar-title { font-weight: 800 !important; letter-spacing: -0.02em; color: #0f172a; }
+    .fc .fc-button { border-radius: 10px; font-weight: 700; text-transform: capitalize; padding: 0.6em 1.2em; }
+    .fc .fc-col-header-cell-cushion { color: #64748b; font-weight: 700; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.05em; padding: 1rem 0; }
+    .fc-theme-bootstrap5 a { text-decoration: none; color: #1e293b; }
+</style>
+
+<!-- FullCalendar 6 -->
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
+<script src='https://cdn.jsdelivr.net/npm/@fullcalendar/google-calendar@6.1.10/index.global.min.js'></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            locale: 'pt-br',
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay'
+            },
+            themeSystem: 'bootstrap5',
+            googleCalendarApiKey: 'AIzaSyAh-QDEIFsdnDYVZ7at-wJVBF3mRbDcJjU',
+            events: {
+                googleCalendarId: 'lcdeksb@gmail.com'
+            },
+            eventDataTransform: function(eventData) {
+                if (!eventData.title || eventData.title === 'undefined') {
+                    eventData.title = 'Compromisso (Detalhes Ocultos)';
+                }
+                return eventData;
+            },
+            eventClick: function(arg) {
+                window.open(arg.event.url, '_blank');
+                arg.jsEvent.preventDefault();
+            },
+            eventDidMount: function(info) {
+                // Add minor shadow to events
+                info.el.style.boxShadow = '0 2px 4px rgba(0,0,0,0.05)';
+                info.el.style.borderRadius = '6px';
+                info.el.style.border = 'none';
+                info.el.style.padding = '2px 4px';
+            }
+        });
+        calendar.render();
+    });
+</script>
+{% endblock %}

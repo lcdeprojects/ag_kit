@@ -1,0 +1,77 @@
+{% extends 'clinic/base.html' %}
+
+{% block title %}
+    {% if object %}Editar{% else %}Novo{% endif %} Pagamento - Aliada
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="d-flex align-items-center mb-4">
+            <a href="{% url 'payment-list' %}" class="btn btn-white border-0 me-3 shadow-sm rounded-circle p-2" title="Voltar">
+                <i data-lucide="chevron-left" class="text-primary"></i>
+            </a>
+            <div>
+                <h1 class="fw-extrabold mb-0">{% if object %}Editar{% else %}Novo{% endif %} Pagamento</h1>
+                <p class="text-muted small mb-0">O valor do plano será preenchido automaticamente ao selecioná-lo.</p>
+            </div>
+        </div>
+
+        <div class="card border-0 shadow-sm">
+            <div class="card-body p-5">
+                <form method="post" novalidate id="payment-form">
+                    {% csrf_token %}
+                    
+                    {% for field in form %}
+                    <div class="mb-4">
+                        <label for="{{ field.id_for_label }}" class="form-label fw-bold text-slate-700 small text-uppercase" style="letter-spacing: 0.05em;">
+                            {{ field.label }}
+                        </label>
+                        {{ field }}
+                        {% if field.help_text %}
+                        <div class="form-text small">{{ field.help_text }}</div>
+                        {% endif %}
+                        {% for error in field.errors %}
+                        <div class="text-danger small mt-1 fw-bold">
+                            <i data-lucide="alert-circle" class="me-1" style="width: 14px; height: 14px;"></i> {{ error }}
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endfor %}
+
+                    <div class="d-flex justify-content-end gap-3 mt-5">
+                        <a href="{% url 'payment-list' %}" class="btn btn-white border px-4">Cancelar</a>
+                        <button type="submit" class="btn btn-primary px-5 shadow-sm">
+                            <i data-lucide="save" class="me-2" style="width: 18px;"></i>
+                            Salvar Pagamento
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{ plan_amounts|json_script:"plan-amounts-data" }}
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const planSelect = document.querySelector('select[name="plan"]');
+    const amountInput = document.querySelector('input[name="amount"]');
+    const planAmounts = JSON.parse(document.getElementById('plan-amounts-data').textContent);
+
+    if (planSelect && amountInput) {
+        planSelect.addEventListener('change', function() {
+            const planId = this.value;
+            if (planId && planAmounts[planId]) {
+                amountInput.value = planAmounts[planId].toFixed(2);
+                
+                // Visual feedback
+                amountInput.classList.add('is-valid');
+                setTimeout(() => amountInput.classList.remove('is-valid'), 1000);
+            }
+        });
+    }
+});
+</script>
+{% endblock %}
