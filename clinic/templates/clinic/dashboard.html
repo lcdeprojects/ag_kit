@@ -3,7 +3,8 @@
 {% block content %}
 <div class="row mb-5">
     <div class="col-md-12">
-        <h1 class="fw-extrabold mb-1">Bem-vindo à Aliada!</h1>
+        <h1 class="fw-extrabold mb-1" style="color: #6376aa;">{{user.first_name.upper}}, <span
+                style="color: #0a0a0b;">Bem-vindo à Aliada!</span> </h1>
         <p class="text-muted fs-5">Visão geral da sua clínica hoje e compromissos da semana.</p>
     </div>
 </div>
@@ -27,28 +28,32 @@
 
     <!-- Expired Plans Card -->
     <div class="col">
-        <div class="card h-100 p-2 border-0 shadow-sm {% if expired_count > 0 %}border-start border-danger border-4{% endif %}" style="background: white;">
+        <div class="card h-100 p-2 border-0 shadow-sm {% if expired_count > 0 %}border-start border-danger border-4{% endif %}"
+            style="background: white;">
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-start mb-3">
                     <div class="bg-danger bg-opacity-10 p-3 rounded-4">
                         <i data-lucide="alert-octagon" class="text-danger" style="width: 24px; height: 24px;"></i>
                     </div>
                 </div>
-                <h6 class="text-muted fw-bold mb-1 small text-uppercase" style="letter-spacing: 0.1em;">Planos Expirados</h6>
+                <h6 class="text-muted fw-bold mb-1 small text-uppercase" style="letter-spacing: 0.1em;">Planos Expirados
+                </h6>
                 <h2 class="fw-extrabold mb-0 {% if expired_count > 0 %}text-danger{% endif %}">{{ expired_count }}</h2>
             </div>
         </div>
     </div>
     <!-- Expiring Soon Card -->
     <div class="col">
-        <div class="card h-100 p-2 border-0 shadow-sm {% if warning_count > 0 %}border-start border-warning border-4{% endif %}" style="background: white;">
+        <div class="card h-100 p-2 border-0 shadow-sm {% if warning_count > 0 %}border-start border-warning border-4{% endif %}"
+            style="background: white;">
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-start mb-3">
                     <div class="bg-warning bg-opacity-10 p-3 rounded-4">
                         <i data-lucide="alert-triangle" class="text-warning" style="width: 24px; height: 24px;"></i>
                     </div>
                 </div>
-                <h6 class="text-muted fw-bold mb-1 small text-uppercase" style="letter-spacing: 0.1em;">Planos Expirando</h6>
+                <h6 class="text-muted fw-bold mb-1 small text-uppercase" style="letter-spacing: 0.1em;">Planos Expirando
+                </h6>
                 <h2 class="fw-extrabold mb-0 {% if warning_count > 0 %}text-warning{% endif %}">{{ warning_count }}</h2>
             </div>
         </div>
@@ -56,14 +61,16 @@
     {% if is_admin %}
     <!-- Monthly Revenue -->
     <div class="col">
-        <div class="card h-100 p-2 border-0 shadow-sm" style="background: linear-gradient(135deg, #ffffff 0%, #D9E2FF 100%);">
+        <div class="card h-100 p-2 border-0 shadow-sm"
+            style="background: linear-gradient(135deg, #ffffff 0%, #D9E2FF 100%);">
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-start mb-3">
                     <div class="bg-white p-3 rounded-4 shadow-sm">
                         <i data-lucide="trending-up" class="text-primary" style="width: 24px; height: 24px;"></i>
                     </div>
                 </div>
-                <h6 class="text-muted fw-bold mb-1 small text-uppercase" style="letter-spacing: 0.1em;">Receita Mensal</h6>
+                <h6 class="text-muted fw-bold mb-1 small text-uppercase" style="letter-spacing: 0.1em;">Receita Mensal
+                </h6>
                 <h2 class="fw-extrabold mb-0">R$ {{ month_revenue|default:"0" }}</h2>
             </div>
         </div>
@@ -99,21 +106,26 @@
                             <tr>
                                 <td class="fw-bold ps-4 text-slate-800">{{ appointment.patient.name }}</td>
                                 <td class="text-slate-600">{{ appointment.date|date:"H:i" }}</td>
-                                <td>{% if appointment.user %}{{ appointment.user.get_full_name|default:appointment.user.username }}{% else %}-{% endif %}</td>
+                                <td>{% if appointment.user %}{{
+                                    appointment.user.get_full_name|default:appointment.user.username }}{% else %}-{%
+                                    endif %}</td>
                                 <td>
-                                    <span class="badge {% if appointment.status == 'completed' %}bg-success{% elif appointment.status == 'scheduled' %}bg-info{% else %}bg-danger text-dark{% endif %} bg-opacity-10">
+                                    <span
+                                        class="badge {% if appointment.status == 'completed' %}bg-success{% elif appointment.status == 'scheduled' %}bg-info{% else %}bg-danger text-dark{% endif %} bg-opacity-10">
                                         {{ appointment.get_status_display }}
                                     </span>
                                 </td>
                                 <td class="pe-4 text-end">
-                                    <a href="{% url 'appointment-detail' appointment.pk %}" class="btn btn-sm btn-white border-0 p-1" title="Ver Prontuário">
+                                    <a href="{% url 'appointment-detail' appointment.pk %}"
+                                        class="btn btn-sm btn-white border-0 p-1" title="Ver Prontuário">
                                         <i data-lucide="eye" class="text-info" style="width: 16px;"></i>
                                     </a>
                                 </td>
                             </tr>
-                            {% empty %}
+                            {% endif %}
                             <tr>
-                                <td colspan="4" class="text-center py-5 text-muted">Nenhuma consulta local para hoje.</td>
+                                <td colspan="4" class="text-center py-5 text-muted">Nenhuma consulta local para hoje.
+                                </td>
                             </tr>
                             {% endfor %}
                         </tbody>
@@ -142,18 +154,21 @@
                             {% if payment.status == 'expired' %}
                             <span class="badge bg-danger bg-opacity-10 text-danger small px-2 py-0">Expirado</span>
                             {% else %}
-                            <span class="badge bg-warning bg-opacity-10 text-warning small px-2 py-0">{{ payment.days_remaining }} dias</span>
+                            <span class="badge bg-warning bg-opacity-10 text-warning small px-2 py-0">{{
+                                payment.days_remaining }} dias</span>
                             {% endif %}
                         </div>
                         <div class="text-muted small d-flex align-items-center">
-                            <i data-lucide="shield-check" class="me-1" style="width: 12px;"></i> {{ payment.plan.title }}
+                            <i data-lucide="shield-check" class="me-1" style="width: 12px;"></i> {{ payment.plan.title
+                            }}
                         </div>
                     </div>
                     {% endfor %}
                 </div>
             </div>
             <div class="card-footer bg-white border-0 text-center py-2">
-                <a href="{% url 'payment-list' %}" class="small fw-bold text-decoration-none text-primary">Ver Todos os Pagamentos</a>
+                <a href="{% url 'payment-list' %}" class="small fw-bold text-decoration-none text-primary">Ver Todos os
+                    Pagamentos</a>
             </div>
         </div>
         {% endif %}
@@ -173,7 +188,8 @@
                 <div id="google-dashboard-calendar" style="min-height: 400px; font-size: 0.9rem;"></div>
             </div>
             <div class="card-footer bg-slate-50 border-0 text-center py-3">
-                <a href="{% url 'agenda' %}" class="small fw-bold text-decoration-none text-primary">Ver Agenda Completa</a>
+                <a href="{% url 'agenda' %}" class="small fw-bold text-decoration-none text-primary">Ver Agenda
+                    Completa</a>
             </div>
         </div>
     </div>
@@ -185,16 +201,20 @@
         <div class="card border-0 shadow-sm">
             <div class="card-body p-4">
                 <div class="d-flex flex-wrap gap-3 justify-content-center">
-                    <a href="{% url 'appointment-create' %}" class="btn btn-primary d-flex align-items-center py-3 px-4">
+                    <a href="{% url 'appointment-create' %}"
+                        class="btn btn-primary d-flex align-items-center py-3 px-4">
                         <i data-lucide="plus-circle" class="me-2"></i> Nova Consulta
                     </a>
-                    <a href="{% url 'patient-create' %}" class="btn btn-celeste d-flex align-items-center py-3 px-4 text-primary">
+                    <a href="{% url 'patient-create' %}"
+                        class="btn btn-celeste d-flex align-items-center py-3 px-4 text-primary">
                         <i data-lucide="user-plus" class="me-2"></i> Novo Paciente
                     </a>
-                    <a href="{% url 'payment-create' %}" class="btn btn-white border d-flex align-items-center py-3 px-4">
+                    <a href="{% url 'payment-create' %}"
+                        class="btn btn-white border d-flex align-items-center py-3 px-4">
                         <i data-lucide="dollar-sign" class="me-2"></i> Registrar Pagamento
                     </a>
-                    <button class="btn btn-white border d-flex align-items-center py-3 px-4" data-bs-toggle="modal" data-bs-target="#reportModal">
+                    <button class="btn btn-white border d-flex align-items-center py-3 px-4" data-bs-toggle="modal"
+                        data-bs-target="#reportModal">
                         <i data-lucide="file-down" class="me-2"></i> Gerar Relatório
                     </button>
                 </div>
@@ -236,12 +256,36 @@
 
 <style>
     /* FullCalendar Dashboard Overrides */
-    .fc-theme-standard .fc-list-day-cushion { background-color: #f8fafc; padding: 12px 20px; }
-    .fc .fc-list-event-title { padding: 8px 20px !important; font-weight: 500; }
-    .fc .fc-list-event-time { padding: 8px 20px !important; color: #64748b; font-weight: 600; }
-    .fc-list-table { border: none !important; }
-    .fc-list-event:hover td { background-color: #f1f5f9 !important; cursor: pointer; }
-    .fc-list-empty { padding: 3rem 0; color: #94a3b8; font-weight: 500; }
+    .fc-theme-standard .fc-list-day-cushion {
+        background-color: #f8fafc;
+        padding: 12px 20px;
+    }
+
+    .fc .fc-list-event-title {
+        padding: 8px 20px !important;
+        font-weight: 500;
+    }
+
+    .fc .fc-list-event-time {
+        padding: 8px 20px !important;
+        color: #64748b;
+        font-weight: 600;
+    }
+
+    .fc-list-table {
+        border: none !important;
+    }
+
+    .fc-list-event:hover td {
+        background-color: #f1f5f9 !important;
+        cursor: pointer;
+    }
+
+    .fc-list-empty {
+        padding: 3rem 0;
+        color: #94a3b8;
+        font-weight: 500;
+    }
 </style>
 
 <!-- FullCalendar core -->
@@ -259,7 +303,7 @@
             events: {
                 googleCalendarId: 'lcdeksb@gmail.com'
             },
-            eventDataTransform: function(eventData) {
+            eventDataTransform: function (eventData) {
                 // Se o título estiver faltando ou for "undefined", define um padrão amigável
                 if (!eventData.title || eventData.title === 'undefined') {
                     eventData.title = 'Compromisso (Detalhes Ocultos)';
@@ -268,7 +312,7 @@
                 }
                 return eventData;
             },
-            eventClick: function(arg) {
+            eventClick: function (arg) {
                 window.open(arg.event.url, '_blank');
                 arg.jsEvent.preventDefault();
             },
