@@ -8,6 +8,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
+from .decorator import group_required
 from django.contrib.auth.models import User
 from .models import Patient, Professional, HealthPlan, Payment, Appointment
 
@@ -81,6 +82,7 @@ def dashboard(request):
     return render(request, 'clinic/dashboard.html', context)
 
 # Patient CRUD
+@group_required('Administradores','Profissionais','Financeiro')
 class PatientListView(LoginRequiredMixin, ListView):
     model = Patient
     template_name = 'clinic/patient_list.html'
@@ -99,70 +101,82 @@ class PatientListView(LoginRequiredMixin, ListView):
         context['current_q'] = self.request.GET.get('q', '')
         return context
 
+@group_required('Administradores','Profissionais','Financeiro')
 class PatientCreateView(LoginRequiredMixin, CrudMixin, CreateView):
     model = Patient
     fields = ['first_name', 'last_name', 'cpf', 'birth_date', 'phone', 'email']
     template_name = 'clinic/generic_form.html'
     success_url = reverse_lazy('patient-list')
 
+@group_required('Administradores','Profissionais','Financeiro')
 class PatientUpdateView(LoginRequiredMixin, CrudMixin, UpdateView):
     model = Patient
     fields = ['first_name', 'last_name', 'cpf', 'birth_date', 'phone', 'email']
     template_name = 'clinic/generic_form.html'
     success_url = reverse_lazy('patient-list')
 
+@group_required('Administradores','Profissionais','Financeiro')
 class PatientDeleteView(LoginRequiredMixin, CrudMixin, DeleteView):
     model = Patient
     template_name = 'clinic/generic_confirm_delete.html'
     success_url = reverse_lazy('patient-list')
 
 # Professional CRUD
+@group_required('Administradores')
 class ProfessionalListView(LoginRequiredMixin, ListView):
     model = Professional
     template_name = 'clinic/professional_list.html'
     context_object_name = 'professionals'
 
+@group_required('Administradores')
 class ProfessionalCreateView(LoginRequiredMixin, CrudMixin, CreateView):
     model = Professional
     fields = ['name', 'registration_number', 'specialty', 'professional_type']
     template_name = 'clinic/generic_form.html'
     success_url = reverse_lazy('professional-list')
 
+@group_required('Administradores')
 class ProfessionalUpdateView(LoginRequiredMixin, CrudMixin, UpdateView):
     model = Professional
     fields = ['name', 'registration_number', 'specialty', 'professional_type']
     template_name = 'clinic/generic_form.html'
     success_url = reverse_lazy('professional-list')
 
+@group_required('Administradores')
 class ProfessionalDeleteView(LoginRequiredMixin, CrudMixin, DeleteView):
     model = Professional
     template_name = 'clinic/generic_confirm_delete.html'
     success_url = reverse_lazy('professional-list')
 
 # HealthPlan CRUD
+@group_required('Administradores')
 class HealthPlanListView(LoginRequiredMixin, ListView):
     model = HealthPlan
     template_name = 'clinic/healthplan_list.html'
     context_object_name = 'plans'
 
+@group_required('Administradores')
 class HealthPlanCreateView(LoginRequiredMixin, CrudMixin, CreateView):
     model = HealthPlan
     fields = ['title', 'description', 'validity_days', 'amount', 'percentage_medical_plan', 'percentage_nutrition_plan']
     template_name = 'clinic/generic_form.html'
     success_url = reverse_lazy('healthplan-list')
 
+@group_required('Administradores')
 class HealthPlanUpdateView(LoginRequiredMixin, CrudMixin, UpdateView):
     model = HealthPlan
     fields = ['title', 'description', 'validity_days', 'amount', 'percentage_medical_plan', 'percentage_nutrition_plan']
     template_name = 'clinic/generic_form.html'
     success_url = reverse_lazy('healthplan-list')
 
+@group_required('Administradores')
 class HealthPlanDeleteView(LoginRequiredMixin, CrudMixin, DeleteView):
     model = HealthPlan
     template_name = 'clinic/generic_confirm_delete.html'
     success_url = reverse_lazy('healthplan-list')
 
 # Payment CRUD
+@group_required('Administradores','Financeiro')
 class PaymentListView(LoginRequiredMixin, ListView):
     model = Payment
     template_name = 'clinic/payment_list.html'
@@ -199,6 +213,7 @@ class PaymentListView(LoginRequiredMixin, ListView):
         context['current_end'] = self.request.GET.get('end', '')
         return context
 
+@group_required('Administradores','Financeiro')
 class PaymentCreateView(LoginRequiredMixin, CrudMixin, CreateView):
     model = Payment
     fields = ['patient', 'plan', 'amount', 'payment_date', 'notes']
@@ -212,6 +227,7 @@ class PaymentCreateView(LoginRequiredMixin, CrudMixin, CreateView):
         context['plan_amounts'] = {plan.id: float(plan.amount) for plan in plans}
         return context
 
+@group_required('Administradores','Financeiro')
 class PaymentUpdateView(LoginRequiredMixin, CrudMixin, UpdateView):
     model = Payment
     fields = ['patient', 'plan', 'amount', 'payment_date', 'notes']
@@ -224,12 +240,15 @@ class PaymentUpdateView(LoginRequiredMixin, CrudMixin, UpdateView):
         context['plan_amounts'] = {plan.id: float(plan.amount) for plan in plans}
         return context
 
+@group_required('Administradores','Financeiro')
 class PaymentDeleteView(LoginRequiredMixin, CrudMixin, DeleteView):
     model = Payment
     template_name = 'clinic/generic_confirm_delete.html'
     success_url = reverse_lazy('payment-list')
 
 # Appointment CRUD
+
+@group_required('Administradores','Profissionais')
 class AppointmentListView(LoginRequiredMixin, ListView):
     model = Appointment
     template_name = 'clinic/appointment_list.html'
@@ -264,6 +283,7 @@ class AppointmentListView(LoginRequiredMixin, ListView):
         context['current_user'] = self.request.GET.get('user', '')
         return context
 
+@group_required('Administradores','Profissionais')
 class AppointmentCreateView(LoginRequiredMixin, CrudMixin, CreateView):
     model = Appointment
     fields = ['patient', 'date', 'status', 'weight', 'clinical_notes', 'prescription']
@@ -281,12 +301,14 @@ class AppointmentCreateView(LoginRequiredMixin, CrudMixin, CreateView):
         form.instance.user = self.request.user
         return super().form_valid(form)
 
+@group_required('Administradores','Profissionais')
 class AppointmentUpdateView(LoginRequiredMixin, CrudMixin, UpdateView):
     model = Appointment
     fields = ['patient', 'date', 'status', 'weight', 'clinical_notes', 'prescription']
     template_name = 'clinic/generic_form.html'
     success_url = reverse_lazy('appointment-list')
 
+@group_required('Administradores','Profissionais')
 class AppointmentDetailView(LoginRequiredMixin, CrudMixin, DeleteView): # Inheriting from DeleteView just for CrudMixin context, better use DetailView
     model = Appointment
     template_name = 'clinic/appointment_detail.html'
@@ -296,6 +318,7 @@ class AppointmentDetailView(LoginRequiredMixin, CrudMixin, DeleteView): # Inheri
         context['verbose_name'] = 'Detalhes da Consulta'
         return context
 
+@group_required('Administradores','Profissionais')
 class PatientHistoryView(LoginRequiredMixin, ListView):
     model = Appointment
     template_name = 'clinic/patient_history.html'
@@ -320,6 +343,7 @@ class PatientHistoryView(LoginRequiredMixin, ListView):
         
         return context
 
+@group_required('Administradores','Profissionais')
 class AppointmentDeleteView(LoginRequiredMixin, CrudMixin, DeleteView):
     model = Appointment
     template_name = 'clinic/generic_confirm_delete.html'
@@ -336,7 +360,7 @@ class AgendaView(LoginRequiredMixin, CrudMixin, ListView):
         context['verbose_name'] = 'Agenda'
         return context
 
-@login_required
+@group_required('Administradores','Financeiro')
 def export_payment_report(request):
     start_date = request.GET.get('start')
     end_date = request.GET.get('end')

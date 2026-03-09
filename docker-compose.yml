@@ -3,10 +3,8 @@ services:
     image: postgres:15
     volumes:
       - postgres_data:/var/lib/postgresql/data/
-    environment:
-      - POSTGRES_DB=aliada_db
-      - POSTGRES_USER=aliada_user
-      - POSTGRES_PASSWORD=aliada_pass
+    env_file:
+      - .env
     ports:
       - "5432:5432"
     healthcheck:
