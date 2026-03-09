@@ -1,7 +1,7 @@
 #decorator group
 import inspect
 from functools import wraps
-from django.http import HttpResponseForbidden
+from django.shortcuts import redirect
 
 
 def group_required(*group_names):
@@ -18,7 +18,7 @@ def group_required(*group_names):
             def patched_dispatch(self, request, *args, **kwargs):
                 if request.user.groups.filter(name__in=group_names).exists():
                     return original_dispatch(self, request, *args, **kwargs)
-                return HttpResponseForbidden("Você não tem permissão para acessar esta página")
+                return redirect('denied')
 
             view.dispatch = patched_dispatch
             return view
@@ -28,7 +28,7 @@ def group_required(*group_names):
         def wrapper(request, *args, **kwargs):
             if request.user.groups.filter(name__in=group_names).exists():
                 return view(request, *args, **kwargs)
-            return HttpResponseForbidden("Você não tem permissão para acessar esta página")
+            return redirect('denied')
 
         return wrapper
 

@@ -420,3 +420,6 @@ def export_payment_report(request):
     
     wb.save(response)
     return response
+
+def denied(request):
+    return render(request, 'clinic/denied.html')

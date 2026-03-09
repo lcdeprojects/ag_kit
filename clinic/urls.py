@@ -39,4 +39,7 @@ urlpatterns = [
     
     # Agenda URL
     path('agenda/', views.AgendaView.as_view(), name='agenda'),
+
+    #Acesso negado
+    path('denied/', views.denied, name='denied'),
 ]
