@@ -36,11 +36,15 @@ urlpatterns = [
     path('consultas/<int:pk>/', views.AppointmentDetailView.as_view(), name='appointment-detail'),
     path('consultas/<int:pk>/editar/', views.AppointmentUpdateView.as_view(), name='appointment-update'),
     path('consultas/<int:pk>/excluir/', views.AppointmentDeleteView.as_view(), name='appointment-delete'),
+    path('today/', views.today, name='today'),
     
     # Agenda URL
     path('agenda/', views.AgendaView.as_view(), name='agenda'),
 
-    #Acesso negado
+    #Acessos
     path('denied/', views.denied, name='denied'),
-    path('today/', views.today, name='today'),
+    path('settings/', views.settings, name='settings'),
+    path('user/create/', views.UserCreateView.as_view(), name='user-create'),
+    path('user/', views.UserListView.as_view(), name='user-list'),
+    path('user/<int:pk>/editar/', views.UserUpdateView.as_view(), name='user-update'),
 ]

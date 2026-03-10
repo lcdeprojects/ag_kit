@@ -1,5 +1,8 @@
 from django.contrib import admin
 from .models import Patient, Professional, HealthPlan, Payment, Appointment
+from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.models import User
+
 
 @admin.register(Patient)
 class PatientAdmin(admin.ModelAdmin):
@@ -28,3 +31,4 @@ class AppointmentAdmin(admin.ModelAdmin):
     list_display = ('patient', 'date', 'weight', 'clinical_notes', 'prescription')
     list_filter = ('patient', 'date')
     date_hierarchy = 'date'
+

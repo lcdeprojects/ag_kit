@@ -428,3 +428,36 @@ def denied(request):
 def today(request):
     appointments_today = Appointment.objects.filter(date__date=timezone.now().date()).order_by('date')
     return render(request, 'clinic/today.html', {'appointments': appointments_today})
+
+@group_required('Administradores','Profissionais')
+def settings(request):
+    return render(request, 'clinic/settings.html')
+
+
+class UserCreateView(LoginRequiredMixin, CrudMixin, CreateView):
+    model = User
+    fields = ['username', 'email', 'password',  'first_name', 'last_name', 'groups']
+    template_name = 'clinic/generic_form.html'
+    success_url = reverse_lazy('user-list')
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+class UserListView(LoginRequiredMixin, CrudMixin, ListView):
+    model = User
+    template_name = 'clinic/user_list.html'
+    context_object_name = 'users'
+
+    def get_queryset(self):
+        return User.objects.all().order_by('first_name', 'username')
+
+class UserUpdateView(LoginRequiredMixin, CrudMixin, UpdateView):
+    model = User
+    fields = ['username', 'email', 'first_name', 'last_name', 'groups','password']
+    template_name = 'clinic/generic_form.html'
+    success_url = reverse_lazy('user-list')
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
