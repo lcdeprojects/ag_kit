@@ -423,3 +423,8 @@ def export_payment_report(request):
 
 def denied(request):
     return render(request, 'clinic/denied.html')
+
+
+def today(request):
+    appointments_today = Appointment.objects.filter(date__date=timezone.now().date()).order_by('date')
+    return render(request, 'clinic/today.html', {'appointments': appointments_today})

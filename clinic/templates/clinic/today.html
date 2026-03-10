@@ -1,0 +1,50 @@
+{% extends 'clinic/base.html' %}
+
+{% block title %}Consultas - Aliada{% endblock %}
+
+{% block content %}
+
+<div class="card border-0 shadow-sm overflow-hidden">
+    <div class="table-responsive">
+        <table class="table table-hover mb-0">
+            <thead>
+                <tr>
+                    <th class="ps-4">Paciente</th>
+                    <th>Responsável</th>
+                    <th>Data & Hora</th>
+                    <th>Status</th>
+                    <th class="pe-4 text-end">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for appointment in appointments %}
+                <tr>
+                    <td class="ps-4 fw-bold">
+                        <a href="{% url 'appointment-detail' appointment.pk %}"
+                            class="text-primary text-decoration-none">
+                            {{ appointment.patient.name }}
+                        </a>
+                    </td>
+                    <td class="text-slate-600">{% if appointment.user %}{{
+                        appointment.user.get_full_name|default:appointment.user.username }}{% else %}-{% endif %}</td>
+                    <td class="fw-medium text-slate-600">{{ appointment.date|date:"d/m/Y H:i" }}</td>
+                    <td>
+                        {% if appointment.status == 'Agendada' %}
+                        <span class="badge bg-success">Agendada</span>
+                        {% elif appointment.status == 'Cancelada' %}
+                        <span class="badge bg-danger">Cancelada</span>
+                        {% elif appointment.status == 'Realizada' %}
+                        <span class="badge bg-primary">Realizada</span>
+                        {% endif %}
+                    </td>
+                    <td class="pe-4 text-end">
+                        <a href="{% url 'appointment-detail' appointment.pk %}"
+                            class="btn btn-primary btn-sm">Detalhes</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

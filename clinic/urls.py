@@ -42,4 +42,5 @@ urlpatterns = [
 
     #Acesso negado
     path('denied/', views.denied, name='denied'),
+    path('today/', views.today, name='today'),
 ]
