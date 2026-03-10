@@ -107,15 +107,9 @@ class Payment(models.Model):
         verbose_name_plural = "Pagamentos"
 
 class Appointment(models.Model):
-    STATUS = (
-        ('scheduled', 'Agendado'),
-        ('completed', 'Concluído'),
-        ('cancelled', 'Cancelado'),
-    )
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE, verbose_name="Paciente")
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="Responsável")
     date = models.DateTimeField(verbose_name="Data e Hora")
-    status = models.CharField(max_length=20, choices=STATUS, default='scheduled', verbose_name="Status")
     
     # Clinical Records
     weight = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, verbose_name="Peso (kg)")

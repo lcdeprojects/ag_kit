@@ -286,7 +286,7 @@ class AppointmentListView(LoginRequiredMixin, ListView):
 @group_required('Administradores','Profissionais')
 class AppointmentCreateView(LoginRequiredMixin, CrudMixin, CreateView):
     model = Appointment
-    fields = ['patient', 'date', 'status', 'weight', 'clinical_notes', 'prescription']
+    fields = ['patient', 'date', 'weight', 'clinical_notes', 'prescription']
     template_name = 'clinic/generic_form.html'
     success_url = reverse_lazy('appointment-list')
 
@@ -304,7 +304,7 @@ class AppointmentCreateView(LoginRequiredMixin, CrudMixin, CreateView):
 @group_required('Administradores','Profissionais')
 class AppointmentUpdateView(LoginRequiredMixin, CrudMixin, UpdateView):
     model = Appointment
-    fields = ['patient', 'date', 'status', 'weight', 'clinical_notes', 'prescription']
+    fields = ['patient', 'date', 'weight', 'clinical_notes', 'prescription']
     template_name = 'clinic/generic_form.html'
     success_url = reverse_lazy('appointment-list')
 
@@ -424,7 +424,7 @@ def export_payment_report(request):
 def denied(request):
     return render(request, 'clinic/denied.html')
 
-
+@group_required('Administradores','Profissionais')
 def today(request):
     appointments_today = Appointment.objects.filter(date__date=timezone.now().date()).order_by('date')
     return render(request, 'clinic/today.html', {'appointments': appointments_today})

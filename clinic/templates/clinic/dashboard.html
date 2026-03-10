@@ -84,10 +84,10 @@
         <div class="card h-100 border-0 shadow-sm overflow-hidden">
             <div class="card-header d-flex justify-content-between align-items-center py-4 px-4 bg-white border-bottom">
                 <div>
-                    <h5 class="mb-0 fw-bold">Consultas da Clínica</h5>
-                    <p class="small text-muted mb-0">Agendamentos realizados no sistema Aliada.</p>
+                    <h5 class="mb-0 fw-bold">Consultas Realizadas Hoje</h5>
+                    <p class="small text-muted mb-0">Consultas realizadas hoje no sistema Aliada.</p>
                 </div>
-                <a href="{% url 'appointment-list' %}" class="btn btn-sm btn-celeste text-primary fw-bold">Ver Todas</a>
+                <a href="{% url 'today' %}" class="btn btn-sm btn-celeste text-primary fw-bold">Ver Todas</a>
             </div>
             <div class="card-body p-0">
                 <div class="table-responsive">
@@ -97,8 +97,7 @@
                                 <th class="ps-4">Paciente</th>
                                 <th>Horário</th>
                                 <th>Responsável</th>
-                                <th>Status</th>
-                                <th class="pe-4 text-end"></th>
+                                <th class="pe-4 text-end">Ações</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -106,25 +105,12 @@
                             <tr>
                                 <td class="fw-bold ps-4 text-slate-800">{{ appointment.patient.name }}</td>
                                 <td class="text-slate-600">{{ appointment.date|date:"H:i" }}</td>
-                                <td>{% if appointment.user %}{{
-                                    appointment.user.get_full_name|default:appointment.user.username }}{% else %}-{%
-                                    endif %}</td>
-                                <td>
-                                    <span
-                                        class="badge {% if appointment.status == 'completed' %}bg-success{% elif appointment.status == 'scheduled' %}bg-info{% else %}bg-danger text-dark{% endif %} bg-opacity-10">
-                                        {{ appointment.get_status_display }}
-                                    </span>
-                                </td>
+                                <td>{{ appointment.user.get_full_name|default:appointment.user.username }}</td>
                                 <td class="pe-4 text-end">
                                     <a href="{% url 'appointment-detail' appointment.pk %}"
                                         class="btn btn-sm btn-white border-0 p-1" title="Ver Prontuário">
                                         <i data-lucide="eye" class="text-info" style="width: 16px;"></i>
                                     </a>
-                                </td>
-                            </tr>
-                            {% endif %}
-                            <tr>
-                                <td colspan="4" class="text-center py-5 text-muted">Nenhuma consulta local para hoje.
                                 </td>
                             </tr>
                             {% endfor %}

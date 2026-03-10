@@ -25,6 +25,6 @@ class PaymentAdmin(admin.ModelAdmin):
 
 @admin.register(Appointment)
 class AppointmentAdmin(admin.ModelAdmin):
-    list_display = ('patient', 'date', 'status')
-    list_filter = ('status', 'date')
+    list_display = ('patient', 'date', 'weight', 'clinical_notes', 'prescription')
+    list_filter = ('patient', 'date')
     date_hierarchy = 'date'
