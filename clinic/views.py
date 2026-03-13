@@ -286,7 +286,7 @@ class AppointmentListView(LoginRequiredMixin, ListView):
 @group_required('Administradores','Profissionais')
 class AppointmentCreateView(LoginRequiredMixin, CrudMixin, CreateView):
     model = Appointment
-    fields = ['patient', 'date', 'weight', 'clinical_notes', 'prescription']
+    fields = ['patient', 'date', 'weight', 'body_fat_percentage', 'clinical_notes', 'prescription']
     template_name = 'clinic/generic_form.html'
     success_url = reverse_lazy('appointment-list')
 
@@ -304,7 +304,7 @@ class AppointmentCreateView(LoginRequiredMixin, CrudMixin, CreateView):
 @group_required('Administradores','Profissionais')
 class AppointmentUpdateView(LoginRequiredMixin, CrudMixin, UpdateView):
     model = Appointment
-    fields = ['patient', 'date', 'weight', 'clinical_notes', 'prescription']
+    fields = ['patient', 'date', 'weight', 'body_fat_percentage', 'clinical_notes', 'prescription']
     template_name = 'clinic/generic_form.html'
     success_url = reverse_lazy('appointment-list')
 
@@ -340,6 +340,15 @@ class PatientHistoryView(LoginRequiredMixin, ListView):
         
         context['weight_labels'] = [a.date.strftime("%d/%m/%Y") for a in weight_data]
         context['weight_values'] = [float(a.weight) for a in weight_data]
+
+        # Data for Body Fat Percentage Chart
+        body_fat_data = Appointment.objects.filter(
+            patient=patient,
+            body_fat_percentage__isnull=False
+        ).order_by('date')
+        
+        context['body_fat_labels'] = [a.date.strftime("%d/%m/%Y") for a in body_fat_data]
+        context['body_fat_values'] = [float(a.body_fat_percentage) for a in body_fat_data]  
         
         return context
 
