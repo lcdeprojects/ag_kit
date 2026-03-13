@@ -117,7 +117,7 @@ class Appointment(models.Model):
     prescription = models.TextField(blank=True, verbose_name="Prescrição")
 
     def __str__(self):
-        return f"Consulta: {self.patient.name}" 
+        return f"Consulta: {self.patient.name}"
 
     class Meta:
         verbose_name = "Consulta"

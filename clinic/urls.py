@@ -46,5 +46,4 @@ urlpatterns = [
     path('settings/', views.settings, name='settings'),
     path('user/create/', views.UserCreateView.as_view(), name='user-create'),
     path('user/', views.UserListView.as_view(), name='user-list'),
-    path('user/<int:pk>/editar/', views.UserUpdateView.as_view(), name='user-update'),
-]
+    path('user/<int:pk>/editar/', views.UserUpdateView.as_view(), name='user-update'),]

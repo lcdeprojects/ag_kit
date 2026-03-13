@@ -1,0 +1,87 @@
+{% extends 'clinic/base.html' %}
+
+{% block title %}Logs de Pagamento - Aliada{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-5">
+    <div>
+        <h1 class="fw-extrabold mb-1">Logs de Pagamento</h1>
+        <p class="text-muted">Gerencie o cadastro de todos os pacientes da clínica.</p>
+    </div>
+    <a href="{% url 'payment_logs' %}" class="btn btn-primary d-flex align-items-center">
+        <i data-lucide="plus-circle" class="me-2"></i> Logs de Pagamento
+    </a>
+</div>
+
+<!-- Filtro e Pesquisa -->
+
+<div class="card border-0 shadow-sm overflow-hidden">
+    <div class="table-responsive">
+        <table class="table table-hover mb-0">
+            <thead>
+                <tr>
+                    <th class="ps-4">Paciente</th>
+                    <th>Data</th>
+                    <th>Valor</th>
+                    <th>Plano</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for payment_log in payment_logs %}
+                <tr>
+                    <td class="ps-4 fw-bold text-slate-800">
+                        {{ payment_log.patient.first_name }} {{ payment_log.patient.last_name }}
+                    </td>
+                    <td>{{ payment_log.date }}</td>
+                    <td>{{ payment_log.amount }}</td>
+                    <td>{{ payment_log.plan.name }}</td>
+                    <td>
+                        <a href="{% url 'payment_logs' %}" class="btn btn-sm btn-white border-0 py-2 px-3"
+                            title="Editar">
+                            <i data-lucide="edit-3" class="text-primary" style="width: 16px;"></i>
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="text-center py-5 text-muted">Nenhum paciente cadastrado.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% if is_paginated %}
+    <div class="card-footer bg-white border-top py-3">
+        <nav>
+            <ul class="pagination justify-content-center mb-0">
+                {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link border-0 text-slate-600"
+                        href="?page={{ page_obj.previous_page_number }}{% if current_q %}&q={{ current_q }}{% endif %}">
+                        <i data-lucide="chevron-left" style="width: 18px;"></i>
+                    </a>
+                </li>
+                {% endif %}
+
+                {% for num in page_obj.paginator.page_range %}
+                <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+                    <a class="page-link border-0 {% if page_obj.number == num %}bg-primary text-white rounded-3 shadow-sm{% else %}text-slate-600{% endif %}"
+                        href="?page={{ num }}{% if current_q %}&q={{ current_q }}{% endif %}">{{ num }}</a>
+                </li>
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link border-0 text-slate-600"
+                        href="?page={{ page_obj.next_page_number }}{% if current_q %}&q={{ current_q }}{% endif %}">
+                        <i data-lucide="chevron-right" style="width: 18px;"></i>
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -10,7 +10,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from .decorator import group_required
 from django.contrib.auth.models import User
-from .models import Patient, Professional, HealthPlan, Payment, Appointment
+from .models import Patient, Professional, HealthPlan, Payment, Appointment, PaymentLog
 
 from django import forms
 
@@ -94,7 +94,7 @@ class PatientListView(LoginRequiredMixin, ListView):
         q = self.request.GET.get('q')
         if q:
             qs = qs.filter(models.Q(first_name__icontains=q) | models.Q(last_name__icontains=q))
-        return qs
+        return qs.order_by('first_name', 'last_name')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -470,3 +470,4 @@ class UserUpdateView(LoginRequiredMixin, CrudMixin, UpdateView):
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
+
