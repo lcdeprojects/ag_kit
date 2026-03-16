@@ -10,7 +10,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from .decorator import group_required
 from django.contrib.auth.models import User
-from .models import Patient, Professional, HealthPlan, Payment, Appointment, PaymentLog
+from .models import Patient, Professional, HealthPlan, Payment, Appointment
 
 from django import forms
 

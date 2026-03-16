@@ -13,18 +13,4 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.CreateModel(
-            name='PaymentLog',
-            fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('date', models.DateTimeField(auto_now_add=True, verbose_name='Data e Hora')),
-                ('action', models.CharField(max_length=100, verbose_name='Ação')),
-                ('payment', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='clinic.payment', verbose_name='Pagamento')),
-                ('user', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to=settings.AUTH_USER_MODEL, verbose_name='Responsável')),
-            ],
-            options={
-                'verbose_name': 'Log de Pagamento',
-                'verbose_name_plural': 'Logs de Pagamento',
-            },
-        ),
     ]
