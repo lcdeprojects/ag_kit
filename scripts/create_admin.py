@@ -1,5 +1,10 @@
 import os
+import sys
 import django
+from pathlib import Path
+
+# Adiciona o diretório raiz ao PYTHONPATH para encontrar 'aliada_root'
+sys.path.append(str(Path(__file__).resolve().parent.parent))
 
 # Configura o ambiente Django ANTES de importar qualquer model
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'aliada_root.settings')
