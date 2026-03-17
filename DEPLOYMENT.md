@@ -21,8 +21,12 @@ cp .env.example .env
 - `SECRET_KEY`: Gere uma chave aleatória forte.
 - `ALLOWED_HOSTS`: O seu domínio ou IP do servidor.
 - `CSRF_TRUSTED_ORIGINS`: `https://seu-dominio.com` ou `http://IP-DO-SERVIDOR`.
+- `DJANGO_SUPERUSER_USERNAME`: `admin` (opcional)
+- `DJANGO_SUPERUSER_EMAIL`: `lcdeksb@gmail.com` (opcional)
+- `DJANGO_SUPERUSER_PASSWORD`: `Aliada@admin26` (opcional)
 
-## 3. Comandos de Deploy
+## 3. Automação de Infraestrutura
+O sistema agora cria o usuário admin automaticamente no primeiro deploy se você definir as variáveis acima.
 
 Para subir o sistema em produção:
 
@@ -44,9 +48,15 @@ O comando acima irá:
 docker-compose logs -f web
 ```
 
-### Criar Super Usuário (Admin)
+### No Railway (Painel)
+1. Vá no seu serviço do Aliada no Railway.
+2. Clique na aba **"Terminal"**.
+3. Digite: `python manage.py createsuperuser` e siga as instruções.
+
+### No Railway (CLI)
+Se você tiver a CLI do Railway instalada:
 ```bash
-docker-compose exec web python manage.py createsuperuser
+railway run python manage.py createsuperuser
 ```
 
 ### Backup do Banco (Se usar Postgres)
