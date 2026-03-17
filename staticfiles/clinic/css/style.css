@@ -1,0 +1,259 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+:root {
+    /* Celeste 2.0 HSL Palette (Updated to match logo) */
+    --celeste-h: 226;
+    --celeste-s: 85%;
+    --celeste-l: 80%;
+
+    --primary: hsl(var(--celeste-h), 75%, 55%);
+    --primary-hover: hsl(var(--celeste-h), 75%, 45%);
+    --celeste: hsl(var(--celeste-h), var(--celeste-s), var(--celeste-l));
+    --celeste-light: hsl(var(--celeste-h), 80%, 96%);
+    --celeste-dark: hsl(var(--celeste-h), 60%, 70%);
+
+    --slate-900: #0f172a;
+    --slate-800: #1e293b;
+    --slate-700: #334155;
+    --slate-600: #475569;
+    --slate-400: #94a3b8;
+    --slate-200: #e2e8f0;
+    --slate-50: #f8fafc;
+
+    --white: #ffffff;
+    --glass: rgba(255, 255, 255, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.4);
+
+    /* Animation Tokens */
+    --spring-easing: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    --smooth-easing: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--slate-50);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    color: var(--slate-800);
+    overflow-x: hidden;
+    line-height: 1.6;
+}
+
+/* --- Layout: Floating Island Navigation --- */
+.sidebar-wrapper {
+    width: 280px;
+    padding: 1.5rem;
+    height: 100vh;
+    position: fixed;
+    z-index: 1000;
+}
+
+.sidebar-island {
+    background: var(--white);
+    height: 100%;
+    border-radius: 24px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05),
+        0 8px 10px -6px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--slate-200);
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem 0;
+    transition: transform 0.3s var(--spring-easing);
+}
+
+.main-content {
+    margin-left: 0;
+    padding: 1.5rem;
+    min-height: 100vh;
+    width: 100%;
+    animation: contentFadeIn 0.8s var(--smooth-easing);
+    position: relative;
+    overflow-x: hidden;
+}
+
+@media (min-width: 768px) {
+    .main-content {
+        margin-left: 280px;
+        width: calc(100% - 280px);
+        padding: 2.5rem;
+    }
+}
+
+@keyframes contentFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* --- Typography --- */
+h1,
+h2,
+h3,
+h4,
+.fw-bold {
+    letter-spacing: -0.03em;
+    color: var(--slate-900);
+}
+
+.navbar-brand {
+    font-weight: 800;
+    font-size: 1.5rem;
+    padding: 0 1.5rem 1.5rem 1.5rem;
+    border-bottom: 1px solid var(--slate-50);
+    margin-bottom: 1rem;
+    color: var(--primary);
+}
+
+/* --- Navigation Links --- */
+.nav-link {
+    display: flex;
+    align-items: center;
+    padding: 0.85rem 1.5rem;
+    margin: 0.25rem 1rem;
+    color: var(--slate-600);
+    font-weight: 600;
+    font-size: 0.95rem;
+    border-radius: 12px;
+    transition: all 0.3s var(--spring-easing);
+    text-decoration: none;
+}
+
+.nav-link i,
+.nav-link .lucide {
+    font-size: 1.25rem;
+    transition: transform 0.3s var(--spring-easing);
+}
+
+.nav-link:hover {
+    background-color: var(--celeste-light);
+    color: var(--primary);
+    transform: translateX(4px);
+}
+
+.nav-link:hover i,
+.nav-link:hover .lucide {
+    transform: scale(1.1);
+}
+
+.nav-link.active {
+    background: var(--primary);
+    color: var(--white);
+    box-shadow: 0 4px 15px -1px rgba(107, 142, 250, 0.4);
+}
+
+/* --- Components: Cards & Tables --- */
+.card {
+    background: var(--white);
+    border-radius: 20px;
+    border: 1px solid var(--slate-200);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    transition: all 0.4s var(--spring-easing);
+    overflow: hidden;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.card-reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s var(--smooth-easing);
+}
+
+.card-reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.table-container {
+    background: var(--white);
+    border-radius: 16px;
+    border: 1px solid var(--slate-200);
+    overflow: hidden;
+}
+
+.table th {
+    background: var(--slate-50);
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    color: var(--slate-400);
+    padding: 1.25rem 1rem;
+    border-bottom: 2px solid var(--celeste-light);
+}
+
+.table td {
+    padding: 1.25rem 1rem;
+    vertical-align: middle;
+    border-bottom: 1px solid var(--slate-50);
+}
+
+/* --- Interactive Elements --- */
+.btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 12px;
+    font-weight: 700;
+    transition: all 0.3s var(--spring-easing);
+}
+
+.btn-primary {
+    background-color: var(--primary);
+    border: none;
+    color: var(--white);
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-hover);
+    transform: scale(1.02);
+    box-shadow: 0 10px 15px -3px rgba(var(--celeste-h), 70%, 45%, 0.3);
+}
+
+.btn-celeste {
+    background-color: var(--celeste);
+    border: none;
+    color: var(--slate-900);
+}
+
+/* --- Forms --- */
+.form-control,
+.form-select {
+    border: 2px solid var(--slate-50);
+    background-color: var(--slate-50);
+    padding: 0.85rem 1.25rem;
+    border-radius: 14px;
+    transition: all 0.3s var(--smooth-easing);
+    font-weight: 500;
+}
+
+.form-control:focus,
+.form-select:focus {
+    background-color: var(--white);
+    border-color: var(--celeste);
+    box-shadow: 0 0 0 4px rgba(178, 255, 255, 0.3);
+}
+
+/* --- Badges --- */
+.badge {
+    padding: 0.6em 1em;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 0.75rem;
+}
+
+.bg-celeste-light {
+    background-color: var(--celeste-light);
+    color: var(--primary);
+}

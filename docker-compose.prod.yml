@@ -1,0 +1,9 @@
+services:
+  web:
+    environment:
+      - DEBUG=0
+    command: sh -c "python manage.py collectstatic --no-input && python manage.py migrate && gunicorn --bind 0.0.0.0:8000 --workers 3 aliada_root.wsgi:application"
+    restart: always
+
+  db:
+    restart: always
