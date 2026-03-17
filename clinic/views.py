@@ -11,7 +11,9 @@ from django.contrib.auth.decorators import login_required
 from .decorator import group_required
 from django.contrib.auth.models import User
 from .models import Patient, Professional, HealthPlan, Payment, Appointment
-
+import secrets
+import string
+from django.contrib import messages
 from django import forms
 
 class CrudMixin:
@@ -443,6 +445,7 @@ def settings(request):
     return render(request, 'clinic/settings.html')
 
 
+@group_required('Administradores')
 class UserCreateView(LoginRequiredMixin, CrudMixin, CreateView):
     model = User
     fields = ['username', 'email', 'password',  'first_name', 'last_name', 'groups']
@@ -450,9 +453,15 @@ class UserCreateView(LoginRequiredMixin, CrudMixin, CreateView):
     success_url = reverse_lazy('user-list')
 
     def form_valid(self, form):
-        form.instance.user = self.request.user
-        return super().form_valid(form)
+        # Hash the password before saving
+        user = form.save(commit=False)
+        user.set_password(form.cleaned_data['password'])
+        user.save()
+        # Save M2M fields (groups)
+        form.save_m2m()
+        return redirect(self.success_url)
 
+@group_required('Administradores')
 class UserListView(LoginRequiredMixin, CrudMixin, ListView):
     model = User
     template_name = 'clinic/user_list.html'
@@ -461,13 +470,27 @@ class UserListView(LoginRequiredMixin, CrudMixin, ListView):
     def get_queryset(self):
         return User.objects.all().order_by('first_name', 'username')
 
+@group_required('Administradores')
 class UserUpdateView(LoginRequiredMixin, CrudMixin, UpdateView):
     model = User
-    fields = ['username', 'email', 'first_name', 'last_name', 'groups','password']
+    fields = ['username', 'email', 'first_name', 'last_name', 'groups']
     template_name = 'clinic/generic_form.html'
     success_url = reverse_lazy('user-list')
 
     def form_valid(self, form):
-        form.instance.user = self.request.user
         return super().form_valid(form)
+
+@login_required
+@group_required('Administradores')
+def user_password_reset(request, pk):
+    user = User.objects.get(pk=pk)
+    # Generate random password
+    alphabet = string.ascii_letters + string.digits
+    temp_password = ''.join(secrets.choice(alphabet) for i in range(8))
+    
+    user.set_password(temp_password)
+    user.save()
+    
+    messages.success(request, f'Senha do usuário {user.username} resetada com sucesso para: {temp_password}')
+    return redirect('user-list')
 

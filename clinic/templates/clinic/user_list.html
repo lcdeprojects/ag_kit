@@ -1,15 +1,15 @@
 {% extends 'clinic/base.html' %}
 
-{% block title %}Pacientes - Aliada{% endblock %}
+{% block title %}Usuários - Aliada{% endblock %}
 
 {% block content %}
 <div class="d-flex justify-content-between align-items-center mb-5">
     <div>
-        <h1 class="fw-extrabold mb-1">Pacientes</h1>
-        <p class="text-muted">Gerencie o cadastro de todos os pacientes da clínica.</p>
+        <h1 class="fw-extrabold mb-1">Usuários</h1>
+        <p class="text-muted">Gerencie o acesso de todos os membros da clínica.</p>
     </div>
-    <a href="{% url 'patient-create' %}" class="btn btn-primary d-flex align-items-center">
-        <i data-lucide="plus-circle" class="me-2"></i> Novo Paciente
+    <a href="{% url 'user-create' %}" class="btn btn-primary d-flex align-items-center">
+        <i data-lucide="user-plus" class="me-2"></i> Novo Usuário
     </a>
 </div>
 
@@ -34,16 +34,24 @@
                     </td>
                     <td>{{ user.username }}</td>
                     <td>{{ user.groups.first.name }}</td>
-                    <td>
-                        <a href="{% url 'user-update' user.pk %}" class="btn btn-sm btn-white border-0 py-2 px-3"
-                            title="Editar">
-                            <i data-lucide="edit-3" class="text-primary" style="width: 16px;"></i>
-                        </a>
+                    <td class="pe-4 text-end">
+                        <div class="d-flex justify-content-end gap-2">
+                            <a href="{% url 'user-update' user.pk %}" class="btn btn-sm btn-white border shadow-sm py-2 px-3"
+                                title="Editar">
+                                <i data-lucide="edit-3" class="text-primary" style="width: 16px;"></i>
+                            </a>
+                            <a href="{% url 'user-password-reset' user.pk %}" 
+                               class="btn btn-sm btn-white border shadow-sm py-2 px-3"
+                               onclick="return confirm('Tem certeza que deseja resetar a senha de {{ user.username }}? Uma nova senha será gerada.')"
+                               title="Resetar Senha">
+                                <i data-lucide="key" class="text-warning" style="width: 16px;"></i>
+                            </a>
+                        </div>
                     </td>
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="6" class="text-center py-5 text-muted">Nenhum paciente cadastrado.</td>
+                    <td colspan="4" class="text-center py-5 text-muted">Nenhum usuário cadastrado.</td>
                 </tr>
                 {% endfor %}
             </tbody>
