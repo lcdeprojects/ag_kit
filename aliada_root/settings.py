@@ -101,7 +101,13 @@ DATABASES = {
     }
 }
 
+# Debug environment variables (will show in Railway logs)
+print(f"DEBUG: DATABASE_URL present: {bool(os.getenv('DATABASE_URL'))}")
+print(f"DEBUG: DB_NAME: {os.getenv('DB_NAME')}")
+print(f"DEBUG: DB_HOST: {os.getenv('DB_HOST')}")
+
 if os.getenv('DATABASE_URL'):
+    print("DEBUG: Using DATABASE_URL configuration")
     # Standard Railway/Heroku/Production DB configuration
     DATABASES['default'] = dj_database_url.config(
         conn_max_age=600,
@@ -109,6 +115,7 @@ if os.getenv('DATABASE_URL'):
         ssl_require=True if os.getenv('DATABASE_SSL', 'true') == 'true' else False
     )
 elif os.getenv('DB_NAME'):
+    print("DEBUG: Using DB_NAME configuration fallback")
     # Manual environment variable configuration (fallback)
     DATABASES['default'] = {
         'ENGINE': 'django.db.backends.postgresql',
