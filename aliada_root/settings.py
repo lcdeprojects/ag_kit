@@ -161,6 +161,9 @@ LOGOUT_REDIRECT_URL = 'dashboard'
 
 # --- SECURITY HARDENING (Option C) ---
 
+# Railway/Proxy SSL
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 # Session & Cookies
 SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_SECURE = not DEBUG
