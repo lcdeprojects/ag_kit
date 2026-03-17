@@ -5,8 +5,15 @@ Este documento descreve como realizar o deploy do sistema Aliada em produção.
 ## 1. Preparação do Servidor
 
 Requisitos:
-- Servidor Linux (Ubuntu 22.04+ recomendado)
+- Servidor Linux (Ubuntu 22.04+ recomendado) ou conta no Railway
 - Docker e Docker Compose instalados
+
+## 1.1 Railway - Linkando o Banco de Dados
+Para que o sistema funcione no Railway, você **deve** ter um serviço de PostgreSQL no mesmo projeto. 
+No painel do Railway:
+1. Clique no seu serviço de aplicação (**web/app**).
+2. Vá em **"Connect"** ou **"Data"**.
+3. Certifique-se de que a variável `DATABASE_URL` está aparecendo. Se não estiver, clique em **"Create Reference"** e selecione o seu banco PostgreSQL.
 
 ## 2. Configuração do Ambiente
 

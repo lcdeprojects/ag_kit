@@ -102,17 +102,20 @@ DATABASES = {
 }
 
 if os.getenv('DATABASE_URL'):
+    # Standard Railway/Heroku/Production DB configuration
     DATABASES['default'] = dj_database_url.config(
         conn_max_age=600,
         conn_health_checks=True,
+        ssl_require=True if os.getenv('DATABASE_SSL', 'true') == 'true' else False
     )
 elif os.getenv('DB_NAME'):
+    # Manual environment variable configuration (fallback)
     DATABASES['default'] = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.getenv('DB_NAME'),
         'USER': os.getenv('DB_USER'),
         'PASSWORD': os.getenv('DB_PASSWORD'),
-        'HOST': os.getenv('DB_HOST', 'db'),
+        'HOST': os.getenv('DB_HOST', 'localhost'),
         'PORT': os.getenv('DB_PORT', '5432'),
     }
 
