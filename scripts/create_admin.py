@@ -1,9 +1,13 @@
-from django.contrib.auth import get_user_model
-from django.contrib.auth.models import Group
+import os
+import django
 
-# Configura o ambiente Django
+# Configura o ambiente Django ANTES de importar qualquer model
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'aliada_root.settings')
 django.setup()
+
+# Agora podemos importar os models
+from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Group
 
 def create_admin():
     User = get_user_model()
