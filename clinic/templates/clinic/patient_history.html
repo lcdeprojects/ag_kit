@@ -100,6 +100,60 @@
     </div>
 </div>
 
+<!-- Timeline of Payments -->
+<div class="row g-4 mt-5">
+    <div class="col-md-12">
+        <h4 class="fw-bold mb-4 px-2">Linha do Tempo de Pagamentos</h4>
+        <div class="timeline">
+            {% for payment in payments %}
+            <div class="card border-0 shadow-sm mb-4 card-reveal">
+                <div class="card-body p-4">
+                    <div class="row align-items-center">
+                        <div class="col-md-2 text-center border-md-end">
+                            <h3 class="fw-extrabold mb-0 text-primary">{{ payment.payment_date|date:"d" }}</h3>
+                            <p class="text-muted small text-uppercase fw-bold mb-0">{{ payment.payment_date|date:"M Y" }}</p>
+                        </div>
+                        <div class="col-md-7 ps-md-4 mt-3 mt-md-0">
+                            <h5 class="fw-bold mb-1">Plano: {{ payment.plan.title|default:"Particular" }}</h5>
+                            <p class="text-muted mb-3">Valor: <span class="fw-bold text-dark">R$ {{ payment.amount }}</span> | Vencimento: {{ payment.expiration_date|date:"d/m/Y" }}</p>
+                            
+                            {% if payment.notes %}
+                            <p class="small text-slate-600 mb-0">
+                                <i data-lucide="info" class="me-1" style="width: 14px;"></i> {{ payment.notes }}
+                            </p>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-3 text-md-end mt-3 mt-md-0">
+                            <div class="mb-3">
+                                {% if payment.status == 'active' %}
+                                    <span class="badge bg-success text-white p-2 px-3 rounded-pill fw-bold">
+                                        Ativo
+                                    </span>
+                                {% elif payment.status == 'warning' %}
+                                    <span class="badge bg-warning text-dark p-2 px-3 rounded-pill fw-bold">
+                                        Próximo ao Vencimento
+                                    </span>
+                                {% else %}
+                                    <span class="badge bg-danger text-white p-2 px-3 rounded-pill fw-bold">
+                                        Expirado
+                                    </span>
+                                {% endif %}
+                            </div>
+                            <a href="{% url 'payment-update' payment.pk %}" class="btn btn-sm btn-outline-secondary rounded-pill px-4">Editar Pagamento</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="text-center py-5 text-muted bg-white rounded-4 shadow-sm">
+                <i data-lucide="wallet" style="width: 48px; height: 48px;" class="mb-3 opacity-25"></i>
+                <p class="mb-0">Nenhum pagamento registrado para este paciente.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {

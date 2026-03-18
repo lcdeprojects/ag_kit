@@ -352,6 +352,9 @@ class PatientHistoryView(LoginRequiredMixin, ListView):
         context['body_fat_labels'] = [a.date.strftime("%d/%m/%Y") for a in body_fat_data]
         context['body_fat_values'] = [float(a.body_fat_percentage) for a in body_fat_data]  
         
+        # Patient Payments
+        context['payments'] = Payment.objects.filter(patient=patient).order_by('-payment_date')
+        
         return context
 
 @group_required('Administradores','Profissionais')
