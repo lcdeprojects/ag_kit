@@ -10,13 +10,4 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RemoveField(
-            model_name='appointment',
-            name='status',
-        ),
-        migrations.AddField(
-            model_name='appointment',
-            name='body_fat_percentage',
-            field=models.DecimalField(blank=True, decimal_places=2, max_digits=5, null=True, verbose_name='Gordura Corporal (%)'),
-        ),
     ]
