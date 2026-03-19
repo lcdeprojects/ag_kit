@@ -60,12 +60,6 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {% if 'professional' in request.resolver_match.url_name %}active{% endif %}"
-                                href="{% url 'professional-list' %}">
-                                <i data-lucide="user-cog" class="me-3"></i> Profissionais
-                            </a>
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link {% if 'healthplan' in request.resolver_match.url_name %}active{% endif %}"
                                 href="{% url 'healthplan-list' %}">
                                 <i data-lucide="shield-check" class="me-3"></i> Planos
