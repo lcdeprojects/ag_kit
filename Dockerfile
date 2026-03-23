@@ -26,12 +26,11 @@ RUN mkdir -p /app/staticfiles /app/media && \
     useradd -m aliada && \
     chown -R aliada:aliada /app
     
-USER aliada
+# USER aliada
 
 # Expose port
 EXPOSE 8000
 
 # Default command (Gunicorn + Migrations + Auto-Admin)
-# This ensures that whenever the container starts (especially on Railway), 
-# the database is updated and the admin user is ready.
-CMD ["sh", "-c", "python manage.py migrate --no-input && python scripts/create_admin.py && gunicorn --bind 0.0.0.0:8000 --workers 3 aliada_root.wsgi:application"]
+# This includes a permission fix for the media volume
+CMD ["sh", "-c", "mkdir -p /app/media/appointments/attachments && chmod -R 777 /app/media && python manage.py migrate --no-input && python scripts/create_admin.py && gunicorn --bind 0.0.0.0:8000 --workers 3 aliada_root.wsgi:application"]
