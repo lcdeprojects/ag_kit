@@ -168,6 +168,10 @@ LOGGING = {
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
+# Media files (Uploaded by users)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
 # WhiteNoise storage for compressed static files
 STORAGES = {
     "default": {

@@ -19,7 +19,7 @@
 
         <div class="card border-0 shadow-sm">
             <div class="card-body p-5">
-                <form method="post" novalidate>
+                <form method="post" enctype="multipart/form-data" novalidate>
                     {% csrf_token %}
                     
                     {% for field in form %}
@@ -38,6 +38,34 @@
                         {% endfor %}
                     </div>
                     {% endfor %}
+
+                    {% if verbose_name == 'Consulta' or 'consulta' in verbose_name|lower %}
+                    <div class="mb-4 pt-3 border-top">
+                        <label class="form-label fw-bold text-slate-700 small text-uppercase" style="letter-spacing: 0.05em;">
+                            Anexos (Fotos e Exames)
+                        </label>
+                        
+                        {% if object and object.attachments.all %}
+                        <div class="mb-3 d-flex flex-wrap gap-2">
+                            {% for attachment in object.attachments.all %}
+                            <div class="badge bg-slate-100 text-slate-700 p-2 d-flex align-items-center gap-2 border">
+                                <i data-lucide="file" style="width: 14px; height: 14px;"></i>
+                                <span class="small">{{ attachment.file.name|slice:":30" }}</span>
+                                <a href="{% url 'attachment-delete' attachment.pk %}" class="text-danger ms-1" title="Excluir">
+                                    <i data-lucide="x" style="width: 14px; height: 14px;"></i>
+                                </a>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+
+                        <input type="file" name="attachments" multiple class="form-control bg-slate-50 border-dashed py-3">
+                        <div class="form-text small text-muted">
+                            <i data-lucide="info" class="me-1" style="width: 12px; height: 12px;"></i>
+                            Você pode selecionar múltiplos arquivos para upload.
+                        </div>
+                    </div>
+                    {% endif %}
 
                     <div class="d-flex justify-content-end gap-3 mt-5">
                         <a href="{{ request.META.HTTP_REFERER|default:'..' }}" class="btn btn-white border px-4">Cancelar</a>

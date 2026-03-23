@@ -36,6 +36,7 @@ urlpatterns = [
     path('consultas/<int:pk>/', views.AppointmentDetailView.as_view(), name='appointment-detail'),
     path('consultas/<int:pk>/editar/', views.AppointmentUpdateView.as_view(), name='appointment-update'),
     path('consultas/<int:pk>/excluir/', views.AppointmentDeleteView.as_view(), name='appointment-delete'),
+    path('anexos/<int:pk>/excluir/', views.AttachmentDeleteView.as_view(), name='attachment-delete'),
     path('today/', views.today, name='today'),
     
     # Agenda URL

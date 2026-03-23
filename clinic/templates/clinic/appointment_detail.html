@@ -42,6 +42,48 @@
                 </div>
             </div>
         </div>
+
+        <!-- Attachments Section -->
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header bg-white border-bottom py-4 px-4 d-flex justify-content-between align-items-center">
+                <h5 class="fw-bold mb-0">Anexos & Exames</h5>
+                <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill px-3">{{ object.attachments.count }} arquivo(s)</span>
+            </div>
+            <div class="card-body p-4">
+                {% if object.attachments.all %}
+                <div class="row g-3">
+                    {% for attachment in object.attachments.all %}
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-center p-3 rounded-4 border border-slate-100 bg-white shadow-sm transition-all group">
+                            <div class="bg-celeste-light p-3 rounded-3 me-3">
+                                <i data-lucide="file-text" class="text-primary"></i>
+                            </div>
+                            <div class="flex-grow-1 min-width-0">
+                                <h6 class="mb-0 text-truncate fw-bold">{{ attachment.file.name|slice:"25:" }}</h6>
+                                <p class="text-muted small mb-0">{{ attachment.uploaded_at|date:"d/m/Y" }}</p>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <a href="{{ attachment.file.url }}" target="_blank" class="btn btn-white btn-sm border-0 shadow-sm rounded-circle p-2" title="Ver/Baixar">
+                                    <i data-lucide="download" class="text-primary" style="width: 16px; height: 16px;"></i>
+                                </a>
+                                <a href="{% url 'attachment-delete' attachment.pk %}" class="btn btn-white btn-sm border-0 shadow-sm rounded-circle p-2 transition-all" title="Excluir">
+                                    <i data-lucide="trash-2" class="text-danger" style="width: 16px; height: 16px;"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="text-center py-5 bg-slate-50 rounded-4 border border-dashed text-opacity-50">
+                    <div class="p-3 bg-white rounded-circle d-inline-block mb-3 shadow-sm border">
+                        <i data-lucide="file-plus" class="text-muted" style="width: 32px; height: 32px;"></i>
+                    </div>
+                    <p class="text-muted mb-0">Nenhum anexo encontrado para esta consulta.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
     </div>
 
     <!-- Patient & Info Sidebar -->

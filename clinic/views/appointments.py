@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from .base import CrudMixin
 from ..decorator import group_required
-from ..models import Appointment
+from ..models import Appointment, AppointmentAttachment
 
 @group_required('Administradores','Profissionais')
 class AppointmentListView(LoginRequiredMixin, ListView):
@@ -58,7 +58,14 @@ class AppointmentCreateView(LoginRequiredMixin, CrudMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.user = self.request.user
-        return super().form_valid(form)
+        response = super().form_valid(form)
+        
+        # Handle attachments
+        files = self.request.FILES.getlist('attachments')
+        for f in files:
+            AppointmentAttachment.objects.create(appointment=self.object, file=f)
+            
+        return response
 
 @group_required('Administradores','Profissionais')
 class AppointmentUpdateView(LoginRequiredMixin, CrudMixin, UpdateView):
@@ -66,6 +73,23 @@ class AppointmentUpdateView(LoginRequiredMixin, CrudMixin, UpdateView):
     fields = ['patient', 'date', 'weight', 'body_fat_percentage', 'clinical_notes', 'prescription']
     template_name = 'clinic/generic_form.html'
     success_url = reverse_lazy('appointment-list')
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        
+        # Handle attachments
+        files = self.request.FILES.getlist('attachments')
+        for f in files:
+            AppointmentAttachment.objects.create(appointment=self.object, file=f)
+            
+        return response
+
+@group_required('Administradores','Profissionais')
+class AttachmentDeleteView(LoginRequiredMixin, DeleteView):
+    model = AppointmentAttachment
+    
+    def get_success_url(self):
+        return reverse_lazy('appointment-detail', kwargs={'pk': self.object.appointment.pk})
 
 @group_required('Administradores','Profissionais')
 class AppointmentDetailView(LoginRequiredMixin, CrudMixin, DeleteView): # Inheriting from DeleteView just for CrudMixin context, better use DetailView
