@@ -69,7 +69,6 @@
                     <th class="ps-4">Paciente</th>
                     <th>Responsável</th>
                     <th>Data & Hora</th>
-                    <th>Status</th>
                     <th class="pe-4 text-end">Ações</th>
                 </tr>
             </thead>
@@ -83,11 +82,6 @@
                     </td>
                     <td class="text-slate-600">{% if appointment.user %}{{ appointment.user.get_full_name|default:appointment.user.username }}{% else %}-{% endif %}</td>
                     <td class="fw-medium text-slate-600">{{ appointment.date|date:"d/m/Y H:i" }}</td>
-                    <td>
-                        <span class="badge {% if appointment.status == 'completed' %}bg-success{% elif appointment.status == 'scheduled' %}bg-info{% else %}bg-danger{% endif %} bg-opacity-10">
-                            {{ appointment.get_status_display }}
-                        </span>
-                    </td>
                     <td class="pe-4 text-end">
                         <div class="btn-group shadow-sm rounded-3 overflow-hidden">
                             <a href="{% url 'appointment-detail' appointment.pk %}" class="btn btn-sm btn-white border-0 py-2 px-3" title="Ver Prontuário">

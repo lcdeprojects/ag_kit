@@ -22,7 +22,7 @@ RUN pip install --upgrade pip && pip install -r requirements.txt
 COPY . /app/
 
 # Create necessary directories and set permissions
-RUN mkdir -p /app/staticfiles && \
+RUN mkdir -p /app/staticfiles /app/media && \
     useradd -m aliada && \
     chown -R aliada:aliada /app
     

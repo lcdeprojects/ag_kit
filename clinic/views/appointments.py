@@ -87,6 +87,7 @@ class AppointmentUpdateView(LoginRequiredMixin, CrudMixin, UpdateView):
 @group_required('Administradores','Profissionais')
 class AttachmentDeleteView(LoginRequiredMixin, DeleteView):
     model = AppointmentAttachment
+    template_name = 'clinic/generic_confirm_delete.html'
     
     def get_success_url(self):
         return reverse_lazy('appointment-detail', kwargs={'pk': self.object.appointment.pk})

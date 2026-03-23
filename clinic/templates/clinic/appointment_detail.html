@@ -117,12 +117,6 @@
                     <span class="text-muted small fw-bold">Responsável</span>
                     <span class="fw-bold fs-6">{% if object.user %}{{ object.user.get_full_name|default:object.user.username }}{% else %}Não Atribuído{% endif %}</span>
                 </div>
-                <div class="d-flex justify-content-between mb-3">
-                    <span class="text-muted small fw-bold">Status</span>
-                    <span class="badge {% if object.status == 'completed' %}bg-success{% else %}bg-warning text-dark{% endif %} bg-opacity-10 small">
-                        {{ object.get_status_display }}
-                    </span>
-                </div>
                 <div class="d-flex justify-content-between pt-3 border-top">
                     <span class="text-primary fw-bold">Peso Registrado</span>
                     <span class="fw-extrabold fs-5">{% if object.weight %}{{ object.weight }} kg{% else %}--{% endif %}</span>
