@@ -20,7 +20,7 @@ class AppointmentListView(LoginRequiredMixin, ListView):
         # Pesquisa por nome do paciente
         q = self.request.GET.get('q')
         if q:
-            qs = qs.filter(models.Q(patient__first_name__icontains=q) | models.Q(last_name__icontains=q))
+            qs = qs.filter(models.Q(patient__first_name__icontains=q) | models.Q(patient__last_name__icontains=q))
             
         # Filtro por data
         date_filter = self.request.GET.get('date')

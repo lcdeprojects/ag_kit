@@ -255,7 +255,21 @@ h4,
     font-size: 0.75rem;
 }
 
+.bg-orange-light { background-color: rgba(249, 115, 22, 0.1); }
+.text-orange { color: #f97316; }
+.line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-clamp: 2;
+}
 .bg-celeste-light {
     background-color: var(--celeste-light);
     color: var(--primary);
 }
+.space-y-3 > :not([hidden]) ~ :not([hidden]) {
+    --tw-space-y-reverse: 0;
+    margin-top: calc(1rem * (1 - var(--tw-space-y-reverse)));
+    margin-bottom: calc(1rem * var(--tw-space-y-reverse));
+}
