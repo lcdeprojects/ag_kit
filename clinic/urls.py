@@ -12,6 +12,12 @@ urlpatterns = [
     path('pacientes/<int:pk>/excluir/', views.PatientDeleteView.as_view(), name='patient-delete'),
     path('pacientes/<int:pk>/historico/', views.PatientHistoryView.as_view(), name='patient-history'),
     
+    # Anamnese URLs
+    path('pacientes/<int:pk>/anamnese/', views.AnamneseDetailView.as_view(), name='anamnese-detail'),
+    path('pacientes/<int:pk>/anamnese/novo/', views.AnamneseCreateView.as_view(), name='anamnese-create'),
+    path('pacientes/<int:pk>/anamnese/editar/', views.AnamneseUpdateView.as_view(), name='anamnese-update'),
+    path('pacientes/<int:pk>/anamnese/excluir/', views.AnamneseDeleteView.as_view(), name='anamnese-delete'),
+    
     # Professional URLs
     path('profissionais/', views.ProfessionalListView.as_view(), name='professional-list'),
     path('profissionais/novo/', views.ProfessionalCreateView.as_view(), name='professional-create'),

@@ -1,0 +1,215 @@
+{% extends 'clinic/base.html' %}
+
+{% block title %}
+    {% if object %}Editar{% else %}Nova{% endif %} Anamnese - Aliada
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <div class="d-flex align-items-center mb-4">
+            <a href="{% if object %}{% url 'anamnese-detail' patient.pk %}{% else %}{% url 'patient-list' %}{% endif %}" class="btn btn-white border-0 me-3 shadow-sm rounded-circle p-2" title="Voltar">
+                <i data-lucide="chevron-left" class="text-primary"></i>
+            </a>
+            <div>
+                <h1 class="fw-extrabold mb-0">{% if object %}Editar{% else %}Nova{% endif %} Anamnese</h1>
+                <p class="text-muted mb-0">Paciente: <strong>{{ patient.name }}</strong></p>
+            </div>
+        </div>
+
+        <div class="card border-0 shadow-sm">
+            <div class="card-body p-5">
+                <form method="post" novalidate>
+                    {% csrf_token %}
+                    
+                    <div class="row g-4">
+                        <div class="col-12 mb-2">
+                            <h5 class="fw-bold text-primary mb-0 d-flex align-items-center">
+                                <i data-lucide="scale" class="me-2" style="width: 20px;"></i> Avaliação Física
+                            </h5>
+                            <hr class="mt-2 mb-4 opacity-10">
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <label class="form-label fw-bold text-slate-700 small text-uppercase">Altura (m)</label>
+                            {{ form.altura }}
+                            {% for error in form.altura.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label fw-bold text-slate-700 small text-uppercase">Peso (kg)</label>
+                            {{ form.peso }}
+                            {% for error in form.peso.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label fw-bold text-slate-700 small text-uppercase">Circunferência Abdominal (cm)</label>
+                            {{ form.circunferencia_abdominal }}
+                            {% for error in form.circunferencia_abdominal.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                        </div>
+                        <div class="col-md-12">
+                            <label class="form-label fw-bold text-slate-700 small text-uppercase">IMC / Avaliação</label>
+                            {{ form.imc_avaliacao }}
+                            {% for error in form.imc_avaliacao.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                        </div>
+
+                        <div class="col-12 mt-5 mb-2">
+                            <h5 class="fw-bold text-success mb-0 d-flex align-items-center">
+                                <i data-lucide="target" class="me-2" style="width: 20px;"></i> Objetivos e Rotina
+                            </h5>
+                            <hr class="mt-2 mb-4 opacity-10">
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold text-slate-700 small text-uppercase">Qual seu objetivo hoje?</label>
+                            {{ form.objetivo }}
+                            {% for error in form.objetivo.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold text-slate-700 small text-uppercase">O que incomoda você hoje?</label>
+                            {{ form.o_que_incomoda }}
+                            {% for error in form.o_que_incomoda.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label fw-bold text-slate-700 small text-uppercase">Treino?</label>
+                            {{ form.treino }}
+                            {% for error in form.treino.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label fw-bold text-slate-700 small text-uppercase">Intestino?</label>
+                            {{ form.intestino }}
+                            {% for error in form.intestino.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label fw-bold text-slate-700 small text-uppercase">Fenótipo?</label>
+                            {{ form.fenotipo }}
+                            {% for error in form.fenotipo.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                        </div>
+
+                        <div class="col-12 mt-5 mb-2">
+                            <h5 class="fw-bold text-warning mb-0 d-flex align-items-center">
+                                <i data-lucide="shopping-cart" class="me-2" style="width: 20px;"></i> Organização Alimentar
+                            </h5>
+                            <hr class="mt-2 mb-4 opacity-10">
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold text-slate-700 small text-uppercase">Mora com quem?</label>
+                            {{ form.mora_com_quem }}
+                            {% for error in form.mora_com_quem.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold text-slate-700 small text-uppercase">Tem dia para fazer lista?</label>
+                            {{ form.tem_dia_lista_compras }}
+                            {% for error in form.tem_dia_lista_compras.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label fw-bold text-slate-700 small text-uppercase">Como é sua lista de compras?</label>
+                            {{ form.como_e_lista_compras }}
+                            {% for error in form.como_e_lista_compras.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold text-slate-700 small text-uppercase">Aversão?</label>
+                            {{ form.aversao }}
+                            {% for error in form.aversao.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold text-slate-700 small text-uppercase">Como pretende se organizar?</label>
+                            {{ form.organizacao }}
+                            {% for error in form.organizacao.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                        </div>
+                        <div class="col-12 mt-5 mb-2">
+                            <h5 class="fw-bold text-info mb-0 d-flex align-items-center">
+                                <i data-lucide="history" class="me-2" style="width: 20px;"></i> Histórico e Evolução
+                            </h5>
+                            <hr class="mt-2 mb-4 opacity-10">
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label fw-bold text-slate-700 small text-uppercase">Histórico de Evolução de Peso</label>
+                            {{ form.historico_peso }}
+                            {% for error in form.historico_peso.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-end gap-3 mt-5 pt-4 border-top">
+                        <a href="{% if object %}{% url 'anamnese-detail' patient.pk %}{% else %}{% url 'patient-list' %}{% endif %}" class="btn btn-white border px-4">Cancelar</a>
+                        <button type="submit" class="btn btn-primary px-5 shadow-sm">
+                            <i data-lucide="save" class="me-2" style="width: 18px;"></i>
+                            Salvar Anamnese
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .form-control, .form-select {
+        background-color: #f8fafc;
+        border: 1px solid #e2e8f0;
+        padding: 0.5rem 0.75rem;
+        border-radius: 0.5rem;
+        font-size: 0.95rem;
+    }
+    .form-control:focus, .form-select:focus {
+        background-color: #fff;
+        border-color: #6366f1;
+        box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const alturaInput = document.getElementById('id_altura');
+        const pesoInput = document.getElementById('id_peso');
+        const imcSelect = document.getElementById('id_imc_avaliacao');
+
+        function calculateIMC() {
+            const alturaVal = alturaInput.value.replace(',', '.');
+            const pesoVal = pesoInput.value.replace(',', '.');
+            
+            const altura = parseFloat(alturaVal);
+            const peso = parseFloat(pesoVal);
+
+            if (altura > 0 && peso > 0) {
+                const imc = peso / (altura * altura);
+                let classification = "";
+
+                if (imc < 18.5) {
+                    classification = "Abaixo do peso";
+                } else if (imc < 25) {
+                    classification = "Peso normal";
+                } else if (imc < 30) {
+                    classification = "Sobrepeso";
+                } else if (imc < 35) {
+                    classification = "Obesidade Grau I";
+                } else if (imc < 40) {
+                    classification = "Obesidade Grau II";
+                } else {
+                    classification = "Obesidade Grau III";
+                }
+
+                // Encontrar e selecionar a opção correta no select
+                for (let i = 0; i < imcSelect.options.length; i++) {
+                    if (imcSelect.options[i].value === classification) {
+                        imcSelect.selectedIndex = i;
+                        // Disparar evento de mudança caso haja outros scripts ouvindo
+                        imcSelect.dispatchEvent(new Event('change'));
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (alturaInput && pesoInput && imcSelect) {
+            alturaInput.addEventListener('input', calculateIMC);
+            pesoInput.addEventListener('input', calculateIMC);
+            
+            // Calcular inicialmente caso já existam valores (edição)
+            calculateIMC();
+        }
+    });
+</script>
+{% endblock %}

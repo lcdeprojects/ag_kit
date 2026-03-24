@@ -1,0 +1,178 @@
+{% extends 'clinic/base.html' %}
+
+{% block title %}Anamnese: {{ patient.name }} - Aliada{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-5">
+    <div class="d-flex align-items-center">
+        <a href="{% url 'patient-list' %}" class="btn btn-white border-0 me-3 shadow-sm rounded-circle p-2" title="Voltar">
+            <i data-lucide="chevron-left" class="text-primary"></i>
+        </a>
+        <div>
+            <h1 class="fw-extrabold mb-1">Anamnese</h1>
+            <p class="text-muted">{{ patient.name }} • CPF: {{ patient.cpf }}</p>
+        </div>
+    </div>
+    <div class="d-flex gap-2">
+        <a href="{% url 'anamnese-update' patient.pk %}" class="btn btn-primary d-flex align-items-center shadow-sm">
+            <i data-lucide="edit-3" class="me-2"></i> Editar Anamnese
+        </a>
+        <a href="{% url 'anamnese-delete' patient.pk %}" class="btn btn-white text-danger border-0 shadow-sm d-flex align-items-center">
+            <i data-lucide="trash-2" class="me-2"></i> Excluir
+        </a>
+    </div>
+</div>
+
+<div class="row g-4">
+    <!-- Coluna 1: Informações Antropométricas -->
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body p-4">
+                <div class="d-flex align-items-center mb-4">
+                    <div class="bg-primary-soft p-3 rounded-3 me-3">
+                        <i data-lucide="scale" class="text-primary"></i>
+                    </div>
+                    <h5 class="fw-bold mb-0">Avaliação Física</h5>
+                </div>
+                
+                <div class="mb-4">
+                    <label class="text-muted small text-uppercase fw-bold mb-1 d-block">Altura</label>
+                    <p class="fs-4 fw-bold text-slate-800">{{ anamnese.altura }} m</p>
+                </div>
+                
+                <div class="mb-4">
+                    <label class="text-muted small text-uppercase fw-bold mb-1 d-block">Peso</label>
+                    <p class="fs-4 fw-bold text-slate-800">{{ anamnese.peso }} kg</p>
+                </div>
+                
+                <div class="mb-4">
+                    <label class="text-muted small text-uppercase fw-bold mb-1 d-block">Circunferência Abdominal</label>
+                    <p class="fs-4 fw-bold text-slate-800">{{ anamnese.circunferencia_abdominal }} cm</p>
+                </div>
+                
+                <div class="p-3 rounded-3 border 
+                    {% if anamnese.imc_avaliacao == 'Abaixo do peso' %}imc-abaixo
+                    {% elif anamnese.imc_avaliacao == 'Peso normal' %}imc-normal
+                    {% elif anamnese.imc_avaliacao == 'Sobrepeso' %}imc-sobrepeso
+                    {% elif anamnese.imc_avaliacao == 'Obesidade Grau I' %}imc-grau-1
+                    {% elif anamnese.imc_avaliacao == 'Obesidade Grau II' %}imc-grau-2
+                    {% elif anamnese.imc_avaliacao == 'Obesidade Grau III' %}imc-grau-3
+                    {% else %}bg-slate-50{% endif %}">
+                    <label class="text-muted small text-uppercase fw-bold mb-1 d-block">IMC / Avaliação</label>
+                    <p class="mb-0 fw-bold">{{ anamnese.imc_avaliacao }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Coluna 2: Objetivos e Hábitos -->
+    <div class="col-md-8">
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-body p-4 text-slate-800">
+                <div class="d-flex align-items-center mb-4">
+                    <div class="bg-success-soft p-3 rounded-3 me-3">
+                        <i data-lucide="target" class="text-success"></i>
+                    </div>
+                    <h5 class="fw-bold mb-0">Objetivos e Rotina</h5>
+                </div>
+
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <label class="text-muted small text-uppercase fw-bold mb-1 d-block">Qual seu objetivo hoje?</label>
+                        <p class="mb-3">{{ anamnese.objetivo }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="text-muted small text-uppercase fw-bold mb-1 d-block">O que incomoda você hoje?</label>
+                        <p class="mb-3">{{ anamnese.o_que_incomoda }}</p>
+                    </div>
+                    <div class="col-12">
+                        <hr class="my-2 opacity-10">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="text-muted small text-uppercase fw-bold mb-1 d-block">Treino?</label>
+                        <p class="mb-3">{{ anamnese.treino }}</p>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="text-muted small text-uppercase fw-bold mb-1 d-block">Intestino?</label>
+                        <p class="mb-3">{{ anamnese.intestino }}</p>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="text-muted small text-uppercase fw-bold mb-1 d-block">Fenótipo?</label>
+                        <p class="mb-0">{{ anamnese.fenotipo }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card border-0 shadow-sm">
+            <div class="card-body p-4 text-slate-800">
+                <div class="d-flex align-items-center mb-4">
+                    <div class="bg-warning-soft p-3 rounded-3 me-3">
+                        <i data-lucide="shopping-cart" class="text-warning"></i>
+                    </div>
+                    <h5 class="fw-bold mb-0">Organização Alimentar</h5>
+                </div>
+
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <label class="text-muted small text-uppercase fw-bold mb-1 d-block">Mora com quem?</label>
+                        <p class="mb-3">{{ anamnese.mora_com_quem }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="text-muted small text-uppercase fw-bold mb-1 d-block">Tem dia para fazer lista?</label>
+                        <span class="badge {% if anamnese.tem_dia_lista_compras == 'Sim' %}bg-success-soft text-success{% else %}bg-slate-100 text-slate-600{% endif %} px-3 py-2 rounded-pill">
+                            {{ anamnese.tem_dia_lista_compras }}
+                        </span>
+                    </div>
+                    <div class="col-12">
+                        <label class="text-muted small text-uppercase fw-bold mb-1 d-block">Como é sua lista de compras?</label>
+                        <p class="mb-3">{{ anamnese.como_e_lista_compras }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="text-muted small text-uppercase fw-bold mb-1 d-block">Aversão?</label>
+                        <p class="mb-3">{{ anamnese.aversao }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="text-muted small text-uppercase fw-bold mb-1 d-block">Como pretende se organizar?</label>
+                        <p class="mb-0">{{ anamnese.organizacao }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card border-0 shadow-sm mt-4">
+            <div class="card-body p-4 text-slate-800">
+                <div class="d-flex align-items-center mb-4">
+                    <div class="bg-indigo-soft p-3 rounded-3 me-3">
+                        <i data-lucide="history" class="text-indigo"></i>
+                    </div>
+                    <h5 class="fw-bold mb-0">Histórico de Evolução de Peso  </h5>
+                </div>
+                <div class="row g-4">
+                    <div class="col-12">
+                        <p class="mb-0">{{ anamnese.historico_peso|linebreaks }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .bg-primary-soft { background-color: rgba(13, 110, 253, 0.1); }
+    .bg-success-soft { background-color: rgba(25, 135, 84, 0.1); }
+    .bg-warning-soft { background-color: rgba(255, 193, 7, 0.1); }
+    .bg-danger-soft { background-color: rgba(220, 53, 69, 0.1); }
+    .bg-indigo-soft { background-color: rgba(102, 16, 242, 0.1); }
+    .text-indigo { color: #6610f2; }
+
+    /* IMC Colors */
+    .imc-abaixo { background-color: rgba(14, 165, 233, 0.1); color: #0369a1; border-color: rgba(14, 165, 233, 0.2) !important; }
+    .imc-normal { background-color: rgba(16, 185, 129, 0.1); color: #047857; border-color: rgba(16, 185, 129, 0.2) !important; }
+    .imc-sobrepeso { background-color: rgba(245, 158, 11, 0.1); color: #b45309; border-color: rgba(245, 158, 11, 0.2) !important; }
+    .imc-grau-1 { background-color: rgba(249, 115, 22, 0.1); color: #c2410c; border-color: rgba(249, 115, 22, 0.2) !important; }
+    .imc-grau-2 { background-color: rgba(239, 68, 68, 0.1); color: #b91c1c; border-color: rgba(239, 68, 68, 0.2) !important; }
+    .imc-grau-3 { background-color: rgba(153, 27, 27, 0.1); color: #7f1d1d; border-color: rgba(153, 27, 27, 0.2) !important; }
+</style>
+
+{% endblock %}
