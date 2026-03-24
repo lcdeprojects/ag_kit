@@ -80,3 +80,54 @@
     </div>
 </div>
 {% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const cpfFields = document.querySelectorAll('input[name*="cpf"], input[id*="cpf"]');
+        const phoneFields = document.querySelectorAll('input[name*="phone"], input[id*="phone"], input[name*="telefone"], input[id*="telefone"], input[name*="whatsapp"], input[id*="whatsapp"]');
+
+        const maskCPF = (v) => {
+            v = v.replace(/\D/g, '');
+            if (v.length > 11) v = v.substring(0, 11);
+            v = v.replace(/(\d{3})(\d)/, '$1.$2');
+            v = v.replace(/(\d{3})(\d)/, '$1.$2');
+            v = v.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+            return v;
+        };
+
+        const maskPhone = (v) => {
+            v = v.replace(/\D/g, '');
+            if (v.length > 11) v = v.substring(0, 11);
+            if (v.length === 11) {
+                v = v.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+            } else if (v.length > 2) {
+                v = v.replace(/(\d{2})(\d{4})(\d{0,4})/, '($1) $2-$3');
+            } else if (v.length > 0) {
+                v = v.replace(/(\d{0,2})/, '($1');
+            }
+            return v;
+        };
+
+        const applyMask = (fields, maskFn) => {
+            fields.forEach(field => {
+                field.addEventListener('input', (e) => {
+                    const value = e.target.value;
+                    const maskedValue = maskFn(value);
+                    if (value !== maskedValue) {
+                        e.target.value = maskedValue;
+                    }
+                });
+                
+                // Also apply on load in case of saved values
+                if (field.value) {
+                    field.value = maskFn(field.value);
+                }
+            });
+        };
+
+        applyMask(cpfFields, maskCPF);
+        applyMask(phoneFields, maskPhone);
+    });
+</script>
+{% endblock %}
