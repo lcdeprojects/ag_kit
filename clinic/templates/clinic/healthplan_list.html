@@ -4,9 +4,15 @@
 
 {% block content %}
 <div class="d-flex justify-content-between align-items-center mb-5">
-    <div>
-        <h1 class="fw-extrabold mb-1">Planos</h1>
-        <p class="text-muted">Gestão de planos de saúde e parcerias.</p>
+    <div class="d-flex align-items-center gap-3">
+        <button onclick="window.location.href='{% url 'dashboard' %}'" 
+                class="btn btn-back-minimalist" title="Voltar">
+            <i data-lucide="chevron-left"></i>
+        </button>
+        <div>
+            <h1 class="fw-extrabold mb-0">Planos</h1>
+            <p class="text-muted mb-0">Gestão de planos de saúde e parcerias.</p>
+        </div>
     </div>
     <a href="{% url 'healthplan-create' %}" class="btn btn-primary d-flex align-items-center">
         <i data-lucide="plus-circle" class="me-2"></i> Novo Convênio

@@ -15,8 +15,7 @@
     <div class="d-md-none bg-white border-bottom p-3 d-flex justify-content-between align-items-center sticky-top">
         <div class="navbar-brand mb-0 p-0 border-0 d-flex align-items-center gap-2" style="font-size: 1.2rem;">
             <img src="{% static 'clinic/images/logo.png' %}" alt="Logo Aliada" style="height: 28px;">
-            <div class="d-flex align-items-center fw-extrabold" style="color: #6376aa; letter-spacing: -0.05em;">Aliada
-            </div>
+            <div class="d-flex align-items-center fw-extrabold" style="color: #6376aa; letter-spacing: -0.05em;">Aliada</div>
         </div>
         <button class="btn btn-celeste p-2 shadow-none" type="button" data-bs-toggle="offcanvas"
             data-bs-target="#mobileSidebar">
@@ -102,6 +101,7 @@
             <!-- Page Content -->
             <main class="main-content">
                 <div class="container-fluid">
+
                     {% if messages %}
                     {% for message in messages %}
                     <div class="alert alert-{{ message.tags }} alert-dismissible fade show border-0 shadow-sm"
@@ -217,6 +217,43 @@
             el.classList.add('card-reveal');
             observer.observe(el);
         });
+
+        // --- Inactivity Timer (Option A) ---
+        {% if user.is_authenticated %}
+        (function() {
+            const IDLE_TIMEOUT = 3600 * 1000; // 1 hour in ms (matching SESSION_COOKIE_AGE)
+            const CHECK_INTERVAL = 30 * 1000; // Check every 30 seconds
+            const STORAGE_KEY = 'aliada_last_activity';
+            const LOGIN_URL = "{% url 'login' %}?next={{ request.path }}";
+
+            function updateActivity() {
+                localStorage.setItem(STORAGE_KEY, Date.now());
+            }
+
+            function checkInactivity() {
+                const lastActivity = localStorage.getItem(STORAGE_KEY);
+                if (lastActivity) {
+                    const idleTime = Date.now() - parseInt(lastActivity, 10);
+                    if (idleTime > IDLE_TIMEOUT) {
+                        // Clear storage and redirect to login
+                        localStorage.removeItem(STORAGE_KEY);
+                        window.location.href = LOGIN_URL;
+                    }
+                }
+            }
+
+            // Set initial activity on page load
+            updateActivity();
+
+            // Interaction listeners to reset the timer
+            ['mousedown', 'mousemove', 'keydown', 'scroll', 'touchstart'].forEach(eventName => {
+                document.addEventListener(eventName, updateActivity, { passive: true });
+            });
+
+            // Periodically check for inactivity (synced across tabs via localStorage)
+            setInterval(checkInactivity, CHECK_INTERVAL);
+        })();
+        {% endif %}
     </script>
     {% block extra_js %}{% endblock %}
 </body>

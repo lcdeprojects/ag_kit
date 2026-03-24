@@ -7,9 +7,9 @@
 {% block content %}
 <div class="row justify-content-center">
     <div class="col-lg-10">
-        <div class="d-flex align-items-center mb-4">
-            <a href="{% if object %}{% url 'anamnese-detail' patient.pk %}{% else %}{% url 'patient-list' %}{% endif %}" class="btn btn-white border-0 me-3 shadow-sm rounded-circle p-2" title="Voltar">
-                <i data-lucide="chevron-left" class="text-primary"></i>
+        <div class="d-flex align-items-center mb-4 gap-3">
+            <a href="{% if object %}{% url 'anamnese-detail' patient.pk %}{% else %}{% url 'patient-list' %}{% endif %}" class="btn btn-back-minimalist shadow-sm" title="Voltar">
+                <i data-lucide="chevron-left"></i>
             </a>
             <div>
                 <h1 class="fw-extrabold mb-0">{% if object %}Editar{% else %}Nova{% endif %} Anamnese</h1>

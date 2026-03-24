@@ -4,13 +4,14 @@
 
 {% block content %}
 <div class="d-flex justify-content-between align-items-center mb-5">
-    <div class="d-flex align-items-center">
-        <a href="{% url 'patient-list' %}" class="btn btn-white border-0 me-3 shadow-sm rounded-circle p-2" title="Voltar">
-            <i data-lucide="chevron-left" class="text-primary"></i>
-        </a>
+    <div class="d-flex align-items-center gap-3">
+        <button onclick="window.location.href='{% url 'patient-history' patient.pk %}'" 
+                class="btn btn-back-minimalist" title="Voltar">
+            <i data-lucide="chevron-left"></i>
+        </button>
         <div>
-            <h1 class="fw-extrabold mb-1">Anamnese</h1>
-            <p class="text-muted">{{ patient.name }} • CPF: {{ patient.cpf }}</p>
+            <h1 class="fw-extrabold mb-0">Anamnese</h1>
+            <p class="text-muted mb-0">{{ patient.name }} • CPF: {{ patient.cpf }}</p>
         </div>
     </div>
     <div class="d-flex gap-2">

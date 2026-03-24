@@ -4,9 +4,15 @@
 
 {% block content %}
 <div class="d-flex justify-content-between align-items-center mb-5">
-    <div>
-        <h1 class="fw-extrabold mb-1">Usuários</h1>
-        <p class="text-muted">Gerencie o acesso de todos os membros da clínica.</p>
+    <div class="d-flex align-items-center gap-3">
+        <button onclick="window.history.length > 1 ? history.back() : window.location.href='{% url 'dashboard' %}'" 
+                class="btn btn-back-minimalist" title="Voltar">
+            <i data-lucide="chevron-left"></i>
+        </button>
+        <div>
+            <h1 class="fw-extrabold mb-0">Usuários</h1>
+            <p class="text-muted mb-0">Gerencie o acesso de todos os membros da clínica.</p>
+        </div>
     </div>
     <a href="{% url 'user-create' %}" class="btn btn-primary d-flex align-items-center">
         <i data-lucide="user-plus" class="me-2"></i> Novo Usuário

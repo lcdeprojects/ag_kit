@@ -1,22 +1,23 @@
 {% extends 'clinic/base.html' %}
 
 {% block content %}
-<div class="row mb-4 align-items-end">
+<div class="row mb-4 align-items-center">
     <div class="col-md-8">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb mb-2">
-                <li class="breadcrumb-item"><a href="{% url 'appointment-list' %}" class="text-decoration-none">Consultas</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Detalhes</li>
-            </ol>
-        </nav>
-        <h1 class="fw-extrabold mb-0">Registro Clínico</h1>
-        <p class="text-muted mb-0">Detalhes completos da consulta de {{ object.patient.name }}.</p>
+        <div class="d-flex align-items-center gap-3">
+            <button onclick="window.location.href='{% url 'appointment-list' %}'" 
+                    class="btn btn-back-minimalist shadow-sm" title="Voltar">
+                <i data-lucide="chevron-left"></i>
+            </button>
+            <div>
+                <h1 class="fw-extrabold mb-0">Registro Clínico</h1>
+                <p class="text-muted mb-0">Detalhes completos da consulta de {{ object.patient.name }}.</p>
+            </div>
+        </div>
     </div>
     <div class="col-md-4 text-md-end mt-3 mt-md-0">
-        <a href="{% url 'appointment-update' object.pk %}" class="btn btn-celeste text-primary px-4 me-2">
+        <a href="{% url 'appointment-update' object.pk %}" class="btn btn-celeste text-primary px-4">
             <i data-lucide="edit-3" class="me-2"></i> Editar
         </a>
-        <a href="{% url 'appointment-list' %}" class="btn btn-white border px-4">Voltar</a>
     </div>
 </div>
 

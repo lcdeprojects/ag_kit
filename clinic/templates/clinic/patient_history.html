@@ -1,16 +1,21 @@
 {% extends 'clinic/base.html' %}
 
 {% block content %}
-<div class="row mb-5 align-items-end">
+<div class="row mb-5 align-items-center">
     <div class="col-md-8">
-        <h1 class="fw-extrabold mb-1">Histórico Clínico</h1>
-        <p class="text-muted fs-5">Trajetória e evolução de <strong>{{ patient.name }}</strong>.</p>
+        <div class="d-flex align-items-center gap-3">
+            <button onclick="window.location.href='{% url 'patient-list' %}'" 
+                    class="btn btn-back-minimalist shadow-sm" title="Voltar">
+                <i data-lucide="chevron-left"></i>
+            </button>
+            <div>
+                <h1 class="fw-extrabold mb-0">Histórico Clínico</h1>
+                <p class="text-muted mb-0 fs-5">Trajetória e evolução de <strong>{{ patient.name }}</strong>.</p>
+            </div>
+        </div>
     </div>
     <div class="col-md-4 text-md-end mt-3 mt-md-0">
-        <a href="{% url 'patient-list' %}" class="btn btn-white border px-4">Voltar para Pacientes</a>
-    </div>
-    <div class="col-md-4 text-md-end mt-3 mt-md-0">
-        <a href="{% url 'appointment-create' %}" class="btn btn-primary d-flex align-items-center">
+        <a href="{% url 'appointment-create' %}" class="btn btn-primary d-flex align-items-center justify-content-md-end d-md-inline-flex">
             <i data-lucide="plus-circle" class="me-2"></i> Nova Consulta
         </a>
     </div>
