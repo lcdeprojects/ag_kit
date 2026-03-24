@@ -59,12 +59,25 @@
                     <input type="date" class="form-control border-0 shadow-none ps-0" id="endDate" name="end" value="{{ current_end }}">
                 </div>
             </div>
+            <!-- Filtro por Status -->
+            <div class="col-md-2">
+                <label for="statusFilter" class="form-label text-muted small fw-bold">Status</label>
+                <div class="input-group shadow-sm rounded-3 overflow-hidden border">    
+                    <span class="input-group-text bg-white border-0 text-muted"><i data-lucide="activity" style="width: 18px;"></i></span>
+                    <select class="form-select border-0 shadow-none ps-0" id="statusFilter" name="status">
+                        <option value="">Todos os Status</option>
+                        <option value="active" {% if current_status == 'active' %}selected{% endif %}>Ativo</option>
+                        <option value="warning" {% if current_status == 'warning' %}selected{% endif %}>Expirando</option>
+                        <option value="expired" {% if current_status == 'expired' %}selected{% endif %}>Expirado</option>
+                    </select>
+                </div>
+            </div>
             <!-- Botões de Ação -->
             <div class="col-md-2 d-flex gap-2">
                 <button type="submit" class="btn btn-primary flex-grow-1 shadow-sm fw-bold">
                     Pesquisar
                 </button>
-                {% if current_q or current_start or current_end or current_plan %}
+                {% if current_q or current_start or current_end or current_plan or current_status %}
                 <a href="{% url 'payment-list' %}" class="btn btn-white border shadow-sm" title="Limpar Filtros">
                     <i data-lucide="x" class="text-danger" style="width: 18px;"></i>
                 </a>

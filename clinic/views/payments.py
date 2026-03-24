@@ -5,11 +5,13 @@ from django.http import HttpResponse
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db import models
+from django.db.models import Q, F, ExpressionWrapper, DateField, Case, When, Value, DurationField
+from django.db.models.functions import Cast
 from django.utils import timezone
+from datetime import timedelta
+from ..models import HealthPlan, Payment
 from .base import CrudMixin
 from ..decorator import group_required
-from ..models import HealthPlan, Payment
 
 @group_required('Administradores','Financeiro')
 class PaymentListView(LoginRequiredMixin, ListView):
@@ -19,11 +21,29 @@ class PaymentListView(LoginRequiredMixin, ListView):
     paginate_by = 4
 
     def get_queryset(self):
+        # We use Now().date() or timezone.now().date()
+        # For filtering in database, we should ideally use ExpressionWrapper
+        # But validade_days varies. We annotate expiration_date first.
+        
+        # SQLite requirement: adding days to date
+        # PostgreSQL requirement: adding interval
+        # Django DurationField with F() uses microseconds (86400 * 10^6)
+        
         qs = Payment.objects.all().order_by('-payment_date')
         
+        # Annotate with expiration_date to allow filtering
+        # Using ExpressionWrapper with F() * timedelta(days=1) is the standard Django way
+        # that handles PostgreSQL intervals correctly.
+        qs = qs.annotate(
+            annotated_expiration=ExpressionWrapper(
+                F('payment_date') + F('plan__validity_days') * timedelta(days=1),
+                output_field=DateField()
+            )
+        )
+
         q = self.request.GET.get('q')
         if q:
-            qs = qs.filter(models.Q(patient__first_name__icontains=q) | models.Q(patient__last_name__icontains=q))
+            qs = qs.filter(Q(patient__first_name__icontains=q) | Q(patient__last_name__icontains=q))
             
         plan_id = self.request.GET.get('plan')
         if plan_id:
@@ -36,6 +56,20 @@ class PaymentListView(LoginRequiredMixin, ListView):
         end_date = self.request.GET.get('end')
         if end_date:
             qs = qs.filter(payment_date__lte=end_date)
+
+        status_filter = self.request.GET.get('status')
+        today = timezone.now().date()
+        
+        if status_filter:
+            if status_filter == 'expired':
+                qs = qs.filter(annotated_expiration__lt=today)
+            elif status_filter == 'warning':
+                qs = qs.filter(
+                    annotated_expiration__gte=today,
+                    annotated_expiration__lte=today + timedelta(days=20)
+                )
+            elif status_filter == 'active':
+                qs = qs.filter(annotated_expiration__gt=today + timedelta(days=20))
             
         return qs
 
@@ -46,6 +80,7 @@ class PaymentListView(LoginRequiredMixin, ListView):
         context['current_plan'] = self.request.GET.get('plan', '')
         context['current_start'] = self.request.GET.get('start', '')
         context['current_end'] = self.request.GET.get('end', '')
+        context['current_status'] = self.request.GET.get('status', '')
         return context
 
 @group_required('Administradores','Financeiro')
