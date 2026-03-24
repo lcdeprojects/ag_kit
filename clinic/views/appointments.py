@@ -47,7 +47,9 @@ class AppointmentCreateView(LoginRequiredMixin, CrudMixin, CreateView):
     model = Appointment
     fields = ['patient', 'date', 'weight', 'body_fat_percentage', 'clinical_notes', 'prescription']
     template_name = 'clinic/generic_form.html'
-    success_url = reverse_lazy('appointment-list')
+    
+    def get_success_url(self):
+        return reverse_lazy('patient-history', kwargs={'pk': self.object.patient.pk})
 
     def get_initial(self):
         initial = super().get_initial()
@@ -72,7 +74,9 @@ class AppointmentUpdateView(LoginRequiredMixin, CrudMixin, UpdateView):
     model = Appointment
     fields = ['patient', 'date', 'weight', 'body_fat_percentage', 'clinical_notes', 'prescription']
     template_name = 'clinic/generic_form.html'
-    success_url = reverse_lazy('appointment-list')
+
+    def get_success_url(self):
+        return reverse_lazy('patient-history', kwargs={'pk': self.object.patient.pk})
 
     def form_valid(self, form):
         response = super().form_valid(form)
@@ -90,7 +94,7 @@ class AttachmentDeleteView(LoginRequiredMixin, DeleteView):
     template_name = 'clinic/generic_confirm_delete.html'
     
     def get_success_url(self):
-        return reverse_lazy('appointment-detail', kwargs={'pk': self.object.appointment.pk})
+        return reverse_lazy('patient-history', kwargs={'pk': self.object.appointment.patient.pk})
 
 @group_required('Administradores','Profissionais')
 class AppointmentDetailView(LoginRequiredMixin, CrudMixin, DeleteView): # Inheriting from DeleteView just for CrudMixin context, better use DetailView
