@@ -58,24 +58,28 @@
                                 <i data-lucide="users" class="me-3"></i> Pacientes
                             </a>
                         </li>
+                        {% if user.is_superuser or user.groups.all.0.name == 'Administradores' %}
                         <li class="nav-item">
                             <a class="nav-link {% if 'healthplan' in request.resolver_match.url_name %}active{% endif %}"
                                 href="{% url 'healthplan-list' %}">
                                 <i data-lucide="shield-check" class="me-3"></i> Planos
                             </a>
                         </li>
+                        {% endif %}
                         <li class="nav-item">
                             <a class="nav-link {% if 'appointment' in request.resolver_match.url_name %}active{% endif %}"
                                 href="{% url 'appointment-list' %}">
                                 <i data-lucide="stethoscope" class="me-3"></i> Consultas
                             </a>
                         </li>
+                        {% if user.is_superuser or user.groups.all.0.name == 'Administradores' %}
                         <li class="nav-item">
                             <a class="nav-link {% if 'payment' in request.resolver_match.url_name %}active{% endif %}"
                                 href="{% url 'payment-list' %}">
                                 <i data-lucide="credit-card" class="me-3"></i> Financeiro
                             </a>
                         </li>
+                        {% endif %}
                         {% if user.is_superuser or user.groups.all.0.name == 'Administradores' %}
                         <li class="nav-item">
                             <a class="nav-link {% if 'user' in request.resolver_match.url_name %}active{% endif %}"

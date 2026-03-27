@@ -147,13 +147,12 @@
                             {% if payment.status == 'expired' %}
                             <span class="badge bg-danger bg-opacity-10 text-danger small px-2 py-0">Expirado</span>
                             {% else %}
-                            <span class="badge bg-warning bg-opacity-10 text-warning small px-2 py-0">{{
-                                payment.days_remaining }} dias</span>
+                            <span class="badge bg-warning bg-opacity-10 text-warning small px-2 py-0">{{payment.days_remaining }} dias</span>
                             {% endif %}
                         </div>
                         <div class="text-muted small d-flex align-items-center">
-                            <i data-lucide="shield-check" class="me-1" style="width: 12px;"></i> {{ payment.plan.title
-                            }}
+                            <i data-lucide="shield-check" class="me-1" style="width: 12px;"></i> 
+                            {{ payment.plan.title }}
                         </div>
                     </div>
                     {% endfor %}
