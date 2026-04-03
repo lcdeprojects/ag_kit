@@ -39,7 +39,9 @@ class AnamneseCreateView(LoginRequiredMixin, CrudMixin, CreateView):
         'altura', 'peso', 'mora_com_quem', 'tem_dia_lista_compras', 
         'como_e_lista_compras', 'fenotipo', 'o_que_incomoda', 
         'imc_avaliacao', 'circunferencia_abdominal', 'objetivo', 
-        'treino', 'intestino', 'aversao', 'organizacao', 'historico_peso'
+        'treino', 'intestino', 'aversao', 'organizacao', 'historico_peso',
+        'nome', 'cidade', 'estado', 'profissao', 'idade',
+        'toma_agua', 'medicamentos', 'sono', 'doenca_intolerancia'
     ]
     template_name = 'clinic/anamnese_form.html'
     
@@ -63,7 +65,9 @@ class AnamneseUpdateView(LoginRequiredMixin, CrudMixin, UpdateView):
         'altura', 'peso', 'mora_com_quem', 'tem_dia_lista_compras', 
         'como_e_lista_compras', 'fenotipo', 'o_que_incomoda', 
         'imc_avaliacao', 'circunferencia_abdominal', 'objetivo', 
-        'treino', 'intestino', 'aversao', 'organizacao', 'historico_peso'
+        'treino', 'intestino', 'aversao', 'organizacao', 'historico_peso',
+        'nome', 'cidade', 'estado', 'profissao', 'idade',
+        'toma_agua', 'medicamentos', 'sono', 'doenca_intolerancia'
     ]
     template_name = 'clinic/anamnese_form.html'
 

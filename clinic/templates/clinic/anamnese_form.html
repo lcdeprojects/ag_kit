@@ -22,34 +22,70 @@
                 <form method="post" novalidate>
                     {% csrf_token %}
                     
+                    {% include 'clinic/includes/form_errors.html' %}
+                    
                     <div class="row g-4">
                         <div class="col-12 mb-2">
                             <h5 class="fw-bold text-primary mb-0 d-flex align-items-center">
-                                <i data-lucide="scale" class="me-2" style="width: 20px;"></i> Avaliação Física
+                                <i data-lucide="user" class="me-2" style="width: 20px;"></i> Informações Pessoais
                             </h5>
                             <hr class="mt-2 mb-4 opacity-10">
                         </div>
                         
-                        <div class="col-md-4">
-                            <label class="form-label fw-bold text-slate-700 small text-uppercase">Altura (m)</label>
+                        <div class="col-md-12">
+                            <label class="form-label fw-bold text-slate-700 small text-uppercase">Profissão</label>
+                            {{ form.profissao }}
+                            {% for error in form.profissao.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold text-slate-700 small text-uppercase">Cidade</label>
+                            {{ form.cidade }}
+                            {% for error in form.cidade.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold text-slate-700 small text-uppercase">Estado</label>
+                            {{ form.estado }}
+                            {% for error in form.estado.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold text-slate-700 small text-uppercase">Altura</label>
                             {{ form.altura }}
                             {% for error in form.altura.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
                         </div>
-                        <div class="col-md-4">
-                            <label class="form-label fw-bold text-slate-700 small text-uppercase">Peso (kg)</label>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold text-slate-700 small text-uppercase">Peso</label>
                             {{ form.peso }}
                             {% for error in form.peso.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
                         </div>
-                        <div class="col-md-4">
-                            <label class="form-label fw-bold text-slate-700 small text-uppercase">Circunferência Abdominal (cm)</label>
-                            {{ form.circunferencia_abdominal }}
-                            {% for error in form.circunferencia_abdominal.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                        <div class="col-md-12">
+                            <label class="form-label fw-bold text-slate-700 small text-uppercase">Mora com quem?</label>
+                            {{ form.mora_com_quem }}
+                            {% for error in form.mora_com_quem.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
                         </div>
                         <div class="col-md-12">
-                            <label class="form-label fw-bold text-slate-700 small text-uppercase">IMC / Avaliação</label>
-                            {{ form.imc_avaliacao }}
-                            {% for error in form.imc_avaliacao.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                            <label class="form-label fw-bold text-slate-700 small text-uppercase">Lista de compras</label>
+                            {{ form.tem_dia_lista_compras }}
+                            {% for error in form.tem_dia_lista_compras.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
                         </div>
+                        <div class="col-md-12">
+                            <label class="form-label fw-bold text-slate-700 small text-uppercase">Como é sua lista de compras?</label>
+                            {{ form.como_e_lista_compras }}
+                            {% for error in form.como_e_lista_compras.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                        </div>
+                        <div class="row g-4">
+                        <div class="col-12 mb-2">
+                            <h5 class="fw-bold text-primary mb-0 d-flex align-items-center">
+                                <i data-lucide="scale" class="me-2" style="width: 20px;"></i> Histórico e Evolução
+                            </h5>
+                            <hr class="mt-2 mb-4 opacity-10">
+                        </div>
+                        
+                        <div class="col-md-12">
+                            <label class="form-label fw-bold text-slate-700 small text-uppercase">Histórico de Evolução de Peso</label>
+                            {{ form.historico_peso }}
+                            {% for error in form.historico_peso.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                       </div>
+
 
                         <div class="col-12 mt-5 mb-2">
                             <h5 class="fw-bold text-success mb-0 d-flex align-items-center">
@@ -59,29 +95,29 @@
                         </div>
 
                         <div class="col-md-6">
-                            <label class="form-label fw-bold text-slate-700 small text-uppercase">Qual seu objetivo hoje?</label>
-                            {{ form.objetivo }}
-                            {% for error in form.objetivo.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                            <label class="form-label fw-bold text-slate-700 small text-uppercase">Fenótipo/Sugestão de tratamento?</label>
+                            {{ form.fenotipo }}
+                            {% for error in form.fenotipo.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
                         </div>
                         <div class="col-md-6">
                             <label class="form-label fw-bold text-slate-700 small text-uppercase">O que incomoda você hoje?</label>
                             {{ form.o_que_incomoda }}
                             {% for error in form.o_que_incomoda.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
                         </div>
-                        <div class="col-md-4">
-                            <label class="form-label fw-bold text-slate-700 small text-uppercase">Treino?</label>
-                            {{ form.treino }}
-                            {% for error in form.treino.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                        <div class="col-md-12">
+                            <label class="form-label fw-bold text-slate-700 small text-uppercase">IMC/Avaliação</label>
+                            {{ form.imc_avaliacao }}
+                            {% for error in form.imc_avaliacao.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
                         </div>
-                        <div class="col-md-4">
-                            <label class="form-label fw-bold text-slate-700 small text-uppercase">Intestino?</label>
-                            {{ form.intestino }}
-                            {% for error in form.intestino.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                        <div class="col-md-12">
+                            <label class="form-label fw-bold text-slate-700 small text-uppercase">Circunferência Abdominal</label>
+                            {{ form.circunferencia_abdominal }}
+                            {% for error in form.circunferencia_abdominal.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
                         </div>
-                        <div class="col-md-4">
-                            <label class="form-label fw-bold text-slate-700 small text-uppercase">Fenótipo?</label>
-                            {{ form.fenotipo }}
-                            {% for error in form.fenotipo.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                        <div class="col-md-12">
+                            <label class="form-label fw-bold text-slate-700 small text-uppercase">Qual seu objetivo?</label>
+                            {{ form.objetivo }}
+                            {% for error in form.objetivo.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
                         </div>
 
                         <div class="col-12 mt-5 mb-2">
@@ -91,44 +127,47 @@
                             <hr class="mt-2 mb-4 opacity-10">
                         </div>
 
-                        <div class="col-md-6">
-                            <label class="form-label fw-bold text-slate-700 small text-uppercase">Mora com quem?</label>
-                            {{ form.mora_com_quem }}
-                            {% for error in form.mora_com_quem.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                        <div class="col-md-12">
+                            <label class="form-label fw-bold text-slate-700 small text-uppercase">Atividade Física?</label>
+                            {{ form.treino }}
+                            {% for error in form.treino.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label fw-bold text-slate-700 small text-uppercase">Tem dia para fazer lista?</label>
-                            {{ form.tem_dia_lista_compras }}
-                            {% for error in form.tem_dia_lista_compras.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
-                        </div>
-                        <div class="col-12">
-                            <label class="form-label fw-bold text-slate-700 small text-uppercase">Como é sua lista de compras?</label>
-                            {{ form.como_e_lista_compras }}
-                            {% for error in form.como_e_lista_compras.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                            <label class="form-label fw-bold text-slate-700 small text-uppercase">Quanto de água você toma por dia?</label>
+                            {{ form.toma_agua }}
+                            {% for error in form.toma_agua.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label fw-bold text-slate-700 small text-uppercase">Aversão?</label>
+                            <label class="form-label fw-bold text-slate-700 small text-uppercase">Intestino funciona bem?</label>
+                            {{ form.intestino }}
+                            {% for error in form.intestino.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold text-slate-700 small text-uppercase">Seu sono é bom?</label>
+                            {{ form.sono }}
+                            {% for error in form.sono.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold text-slate-700 small text-uppercase">Doença/Intolerância?</label>
+                            {{ form.doenca_intolerancia }}
+                            {% for error in form.doenca_intolerancia.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold text-slate-700 small text-uppercase">Uso de medicamentos?</label>
+                            {{ form.medicamentos }}
+                            {% for error in form.medicamentos.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold text-slate-700 small text-uppercase">Aversão alimentar?</label>
                             {{ form.aversao }}
                             {% for error in form.aversao.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <label class="form-label fw-bold text-slate-700 small text-uppercase">Como pretende se organizar?</label>
                             {{ form.organizacao }}
                             {% for error in form.organizacao.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
                         </div>
-                        <div class="col-12 mt-5 mb-2">
-                            <h5 class="fw-bold text-info mb-0 d-flex align-items-center">
-                                <i data-lucide="history" class="me-2" style="width: 20px;"></i> Histórico e Evolução
-                            </h5>
-                            <hr class="mt-2 mb-4 opacity-10">
-                        </div>
-
-                        <div class="col-12">
-                            <label class="form-label fw-bold text-slate-700 small text-uppercase">Histórico de Evolução de Peso</label>
-                            {{ form.historico_peso }}
-                            {% for error in form.historico_peso.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
-                        </div>
-                    </div>
+                        
 
                     <div class="d-flex justify-content-end gap-3 mt-5 pt-4 border-top">
                         <a href="{% if object %}{% url 'anamnese-detail' patient.pk %}{% else %}{% url 'patient-list' %}{% endif %}" class="btn btn-white border px-4">Cancelar</a>
