@@ -39,7 +39,6 @@ class Anamnese(models.Model):
     aversao = models.CharField(max_length=100, blank=False, null=True, verbose_name="Aversão?")
     organizacao = models.TextField(blank=False, null=True, verbose_name="Como pretende se organizar?")
     historico_peso = models.TextField(blank=False, null=True, verbose_name="Histórico de Evolução de Peso")
-    nome = models.CharField(max_length=100, blank=False, null=True, verbose_name="Nome")
     cidade = models.CharField(max_length=100, blank=False, null=True, verbose_name="Cidade")
     estado = models.CharField(max_length=2, blank=False, null=True, verbose_name="Estado")
     profissao = models.CharField(max_length=100, blank=False, null=True, verbose_name="Profissão")

@@ -10,8 +10,13 @@
             <i data-lucide="chevron-left"></i>
         </button>
         <div>
-            <h1 class="fw-extrabold mb-0">Anamnese</h1>
-            <p class="text-muted mb-0">{{ patient.name }} • CPF: {{ patient.cpf }}</p>
+            <h1 class="fw-extrabold mb-1">Anamnese</h1>
+            <div class="d-flex flex-wrap gap-2 mt-2">
+                <span class="badge bg-slate-50 text-dark fw-medium border px-2 py-1"><i data-lucide="user" class="me-1" style="width:14px;height:14px"></i> {{ patient.name }}</span>
+                {% if anamnese.idade %}<span class="badge bg-slate-50 text-dark fw-medium border px-2 py-1"><i data-lucide="calendar" class="me-1" style="width:14px;height:14px"></i> {{ anamnese.idade }} anos</span>{% endif %}
+                {% if anamnese.profissao %}<span class="badge bg-slate-50 text-dark fw-medium border px-2 py-1"><i data-lucide="briefcase" class="me-1" style="width:14px;height:14px"></i> {{ anamnese.profissao }}</span>{% endif %}
+                {% if anamnese.cidade or anamnese.estado %}<span class="badge bg-slate-50 text-dark fw-medium border px-2 py-1"><i data-lucide="map-pin" class="me-1" style="width:14px;height:14px"></i> {{ anamnese.cidade }}{% if anamnese.estado %} - {{ anamnese.estado }}{% endif %}</span>{% endif %}
+            </div>
         </div>
     </div>
     <div class="d-flex gap-2">
@@ -38,17 +43,17 @@
                 
                 <div class="mb-4">
                     <label class="text-muted small text-uppercase fw-bold mb-1 d-block">Altura</label>
-                    <p class="fs-4 fw-bold text-slate-800">{{ anamnese.altura }} m</p>
+                    <p class="fs-4 fw-bold text-slate-800">{% if anamnese.altura %}{{ anamnese.altura }} m{% else %}--{% endif %}</p>
                 </div>
                 
                 <div class="mb-4">
                     <label class="text-muted small text-uppercase fw-bold mb-1 d-block">Peso</label>
-                    <p class="fs-4 fw-bold text-slate-800">{{ anamnese.peso }} kg</p>
+                    <p class="fs-4 fw-bold text-slate-800">{% if anamnese.peso %}{{ anamnese.peso }} kg{% else %}--{% endif %}</p>
                 </div>
                 
                 <div class="mb-4">
                     <label class="text-muted small text-uppercase fw-bold mb-1 d-block">Circunferência Abdominal</label>
-                    <p class="fs-4 fw-bold text-slate-800">{{ anamnese.circunferencia_abdominal }} cm</p>
+                    <p class="fs-4 fw-bold text-slate-800">{% if anamnese.circunferencia_abdominal %}{{ anamnese.circunferencia_abdominal }} cm{% else %}--{% endif %}</p>
                 </div>
                 
                 <div class="p-3 rounded-3 border 
@@ -60,52 +65,89 @@
                     {% elif anamnese.imc_avaliacao == 'Obesidade Grau III' %}imc-grau-3
                     {% else %}bg-slate-50{% endif %}">
                     <label class="text-muted small text-uppercase fw-bold mb-1 d-block">IMC / Avaliação</label>
-                    <p class="mb-0 fw-bold">{{ anamnese.imc_avaliacao }}</p>
+                    <p class="mb-0 fw-bold">{{ anamnese.imc_avaliacao|default:"Não avaliado" }}</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Coluna 2: Objetivos e Hábitos -->
+    <!-- Coluna 2: Objetivos, Histórico e Hábitos -->
     <div class="col-md-8">
+        
+        <!-- Histórico Médico e Saúde -->
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-body p-4 text-slate-800">
+                <div class="d-flex align-items-center mb-4">
+                    <div class="bg-danger-soft p-3 rounded-3 me-3 text-danger">
+                        <i data-lucide="heart" style="width: 24px; height: 24px;"></i>
+                    </div>
+                    <h5 class="fw-bold mb-0">Histórico Clínico e Saúde</h5>
+                </div>
+
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <label class="text-muted small text-uppercase fw-bold mb-1 d-block">Doenças / Intolerâncias</label>
+                        <p class="mb-3">{% if anamnese.doenca_intolerancia %}{{ anamnese.doenca_intolerancia }}{% else %}<em class="text-muted">Não informado</em>{% endif %}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="text-muted small text-uppercase fw-bold mb-1 d-block">Uso de Medicamentos</label>
+                        <p class="mb-3">{% if anamnese.medicamentos %}{{ anamnese.medicamentos }}{% else %}<em class="text-muted">Não informado</em>{% endif %}</p>
+                    </div>
+                    <div class="col-12">
+                        <hr class="my-2 opacity-10">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="text-muted small text-uppercase fw-bold mb-1 d-block">Dorme bem?</label>
+                        <p class="mb-3">{% if anamnese.sono %}{{ anamnese.sono }}{% else %}<em class="text-muted">--</em>{% endif %}</p>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="text-muted small text-uppercase fw-bold mb-1 d-block">Função Intestinal</label>
+                        <p class="mb-3">{% if anamnese.intestino %}{{ anamnese.intestino }}{% else %}<em class="text-muted">--</em>{% endif %}</p>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="text-muted small text-uppercase fw-bold mb-1 d-block">Ingestão de Água</label>
+                        <p class="mb-0">{% if anamnese.toma_agua %}{{ anamnese.toma_agua }}{% else %}<em class="text-muted">--</em>{% endif %}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Objetivos e Expectativas -->
         <div class="card border-0 shadow-sm mb-4">
             <div class="card-body p-4 text-slate-800">
                 <div class="d-flex align-items-center mb-4">
                     <div class="bg-success-soft p-3 rounded-3 me-3">
                         <i data-lucide="target" class="text-success"></i>
                     </div>
-                    <h5 class="fw-bold mb-0">Objetivos e Rotina</h5>
+                    <h5 class="fw-bold mb-0">Objetivos e Expectativas</h5>
                 </div>
 
                 <div class="row g-4">
                     <div class="col-md-6">
                         <label class="text-muted small text-uppercase fw-bold mb-1 d-block">Qual seu objetivo hoje?</label>
-                        <p class="mb-3">{{ anamnese.objetivo }}</p>
+                        <p class="mb-3">{{ anamnese.objetivo|default:"--" }}</p>
                     </div>
                     <div class="col-md-6">
                         <label class="text-muted small text-uppercase fw-bold mb-1 d-block">O que incomoda você hoje?</label>
-                        <p class="mb-3">{{ anamnese.o_que_incomoda }}</p>
+                        <p class="mb-3">{{ anamnese.o_que_incomoda|default:"--" }}</p>
                     </div>
                     <div class="col-12">
                         <hr class="my-2 opacity-10">
                     </div>
-                    <div class="col-md-4">
-                        <label class="text-muted small text-uppercase fw-bold mb-1 d-block">Treino?</label>
-                        <p class="mb-3">{{ anamnese.treino }}</p>
+                    <div class="col-md-6">
+                        <label class="text-muted small text-uppercase fw-bold mb-1 d-block">Treino e Atividade Física</label>
+                        <p class="mb-3">{{ anamnese.treino|default:"--" }}</p>
                     </div>
-                    <div class="col-md-4">
-                        <label class="text-muted small text-uppercase fw-bold mb-1 d-block">Intestino?</label>
-                        <p class="mb-3">{{ anamnese.intestino }}</p>
-                    </div>
-                    <div class="col-md-4">
-                        <label class="text-muted small text-uppercase fw-bold mb-1 d-block">Fenótipo?</label>
-                        <p class="mb-0">{{ anamnese.fenotipo }}</p>
+                    <div class="col-md-6">
+                        <label class="text-muted small text-uppercase fw-bold mb-1 d-block">Fenótipo Mapeado</label>
+                        <p class="mb-0">{{ anamnese.fenotipo|default:"--" }}</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="card border-0 shadow-sm">
+        <!-- Organização Alimentar -->
+        <div class="card border-0 shadow-sm mb-4">
             <div class="card-body p-4 text-slate-800">
                 <div class="d-flex align-items-center mb-4">
                     <div class="bg-warning-soft p-3 rounded-3 me-3">
@@ -117,41 +159,46 @@
                 <div class="row g-4">
                     <div class="col-md-6">
                         <label class="text-muted small text-uppercase fw-bold mb-1 d-block">Mora com quem?</label>
-                        <p class="mb-3">{{ anamnese.mora_com_quem }}</p>
+                        <p class="mb-3">{{ anamnese.mora_com_quem|default:"--" }}</p>
                     </div>
                     <div class="col-md-6">
                         <label class="text-muted small text-uppercase fw-bold mb-1 d-block">Tem dia para fazer lista?</label>
+                        {% if anamnese.tem_dia_lista_compras %}
                         <span class="badge {% if anamnese.tem_dia_lista_compras == 'Sim' %}bg-success-soft text-success{% else %}bg-slate-100 text-slate-600{% endif %} px-3 py-2 rounded-pill">
                             {{ anamnese.tem_dia_lista_compras }}
                         </span>
+                        {% else %}
+                        <em class="text-muted">--</em>
+                        {% endif %}
                     </div>
                     <div class="col-12">
                         <label class="text-muted small text-uppercase fw-bold mb-1 d-block">Como é sua lista de compras?</label>
-                        <p class="mb-3">{{ anamnese.como_e_lista_compras }}</p>
+                        <p class="mb-3">{{ anamnese.como_e_lista_compras|default:"--" }}</p>
                     </div>
                     <div class="col-md-6">
-                        <label class="text-muted small text-uppercase fw-bold mb-1 d-block">Aversão?</label>
-                        <p class="mb-3">{{ anamnese.aversao }}</p>
+                        <label class="text-muted small text-uppercase fw-bold mb-1 d-block">Aversões Alimentares</label>
+                        <p class="mb-3">{{ anamnese.aversao|default:"--" }}</p>
                     </div>
                     <div class="col-md-6">
                         <label class="text-muted small text-uppercase fw-bold mb-1 d-block">Como pretende se organizar?</label>
-                        <p class="mb-0">{{ anamnese.organizacao }}</p>
+                        <p class="mb-0">{{ anamnese.organizacao|default:"--" }}</p>
                     </div>
                 </div>
             </div>
         </div>
 
+        <!-- Histórico de Peso -->
         <div class="card border-0 shadow-sm mt-4">
             <div class="card-body p-4 text-slate-800">
                 <div class="d-flex align-items-center mb-4">
                     <div class="bg-indigo-soft p-3 rounded-3 me-3">
                         <i data-lucide="history" class="text-indigo"></i>
                     </div>
-                    <h5 class="fw-bold mb-0">Histórico de Evolução de Peso  </h5>
+                    <h5 class="fw-bold mb-0">Histórico de Evolução de Peso</h5>
                 </div>
                 <div class="row g-4">
                     <div class="col-12">
-                        <p class="mb-0">{{ anamnese.historico_peso|linebreaks }}</p>
+                        <p class="mb-0">{{ anamnese.historico_peso|default:"Nenhum histórico registrado."|linebreaks }}</p>
                     </div>
                 </div>
             </div>

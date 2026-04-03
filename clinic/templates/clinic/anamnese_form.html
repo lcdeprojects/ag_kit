@@ -27,12 +27,17 @@
                     <div class="row g-4">
                         <div class="col-12 mb-2">
                             <h5 class="fw-bold text-primary mb-0 d-flex align-items-center">
-                                <i data-lucide="user" class="me-2" style="width: 20px;"></i> Informações Pessoais
+                                <i data-lucide="user" class="me-2" style="width: 20px;"></i> Informações Iniciais
                             </h5>
                             <hr class="mt-2 mb-4 opacity-10">
                         </div>
                         
-                        <div class="col-md-12">
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold text-slate-700 small text-uppercase">Idade</label>
+                            {{ form.idade }}
+                            {% for error in form.idade.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                        </div>
+                        <div class="col-md-6">
                             <label class="form-label fw-bold text-slate-700 small text-uppercase">Profissão</label>
                             {{ form.profissao }}
                             {% for error in form.profissao.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
@@ -89,7 +94,7 @@
 
                         <div class="col-12 mt-5 mb-2">
                             <h5 class="fw-bold text-success mb-0 d-flex align-items-center">
-                                <i data-lucide="target" class="me-2" style="width: 20px;"></i> Objetivos e Rotina
+                                <i data-lucide="target" class="me-2" style="width: 20px;"></i> Objetivos e Expectativas
                             </h5>
                             <hr class="mt-2 mb-4 opacity-10">
                         </div>
@@ -122,7 +127,7 @@
 
                         <div class="col-12 mt-5 mb-2">
                             <h5 class="fw-bold text-warning mb-0 d-flex align-items-center">
-                                <i data-lucide="shopping-cart" class="me-2" style="width: 20px;"></i> Organização Alimentar
+                                <i data-lucide="activity" class="me-2" style="width: 20px;"></i> Hábitos e Rotina
                             </h5>
                             <hr class="mt-2 mb-4 opacity-10">
                         </div>
