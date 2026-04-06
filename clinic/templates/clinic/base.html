@@ -225,7 +225,7 @@
         // --- Inactivity Timer (Option A) ---
         {% if user.is_authenticated %}
         (function() {
-            const IDLE_TIMEOUT = 3600 * 1000; // 1 hour in ms (matching SESSION_COOKIE_AGE)
+            const IDLE_TIMEOUT = 60 * 1000; // 1 hour in ms (matching SESSION_COOKIE_AGE)
             const CHECK_INTERVAL = 30 * 1000; // Check every 30 seconds
             const STORAGE_KEY = 'aliada_last_activity';
             const LOGIN_URL = "{% url 'login' %}?next={{ request.path }}";
