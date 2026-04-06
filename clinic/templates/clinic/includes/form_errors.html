@@ -1,0 +1,40 @@
+{% if form.errors %}
+<div class="alert alert-danger shadow-sm border-danger border-opacity-25 rounded-3 mb-4 d-flex align-items-start gap-3">
+    <div class="bg-danger bg-opacity-10 text-danger p-2 rounded-circle mt-1">
+        <i data-lucide="alert-triangle" style="width: 20px; height: 20px;"></i>
+    </div>
+    <div>
+        <h6 class="fw-bold text-danger mb-1">Atenção! Não foi possível salvar.</h6>
+        <p class="mb-2 small text-danger text-opacity-75">Por favor, corrija os erros abaixo antes de tentar novamente:</p>
+        
+        {% if form.non_field_errors %}
+        <ul class="mb-2 ps-3 small fw-semibold text-danger">
+            {% for error in form.non_field_errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        
+        <ul class="mb-0 ps-3 small text-danger">
+            {% for field in form %}
+                {% if field.errors %}
+                <li><strong>{{ field.label }}:</strong> {{ field.errors }}</li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        {% for field in form %}
+            {% if field.errors %}
+                const field_{{ field.name }} = document.getElementById('{{ field.id_for_label }}');
+                if (field_{{ field.name }}) {
+                    field_{{ field.name }}.classList.add('is-invalid', 'border-danger', 'bg-danger', 'bg-opacity-10');
+                }
+            {% endif %}
+        {% endfor %}
+    });
+</script>
+{% endif %}

@@ -22,6 +22,8 @@
                 <form method="post" enctype="multipart/form-data" novalidate>
                     {% csrf_token %}
                     
+                    {% include 'clinic/includes/form_errors.html' %}
+                    
                     {% for field in form %}
                     <div class="mb-4">
                         <label for="{{ field.id_for_label }}" class="form-label fw-bold text-slate-700 small text-uppercase" style="letter-spacing: 0.05em;">
