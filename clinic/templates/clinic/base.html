@@ -225,10 +225,9 @@
         // --- Inactivity Timer (Option A) ---
         {% if user.is_authenticated %}
         (function() {
-            const IDLE_TIMEOUT = 62 * 1000; // 1 hour in ms (matching SESSION_COOKIE_AGE)
+            const IDLE_TIMEOUT = 1 * 60 * 1000; // 30 minutes in ms
             const CHECK_INTERVAL = 30 * 1000; // Check every 30 seconds
             const STORAGE_KEY = 'aliada_last_activity';
-            const LOGIN_URL = "{% url 'login' %}?next={{ request.path }}";
 
             function updateActivity() {
                 localStorage.setItem(STORAGE_KEY, Date.now());
@@ -239,9 +238,17 @@
                 if (lastActivity) {
                     const idleTime = Date.now() - parseInt(lastActivity, 10);
                     if (idleTime > IDLE_TIMEOUT) {
-                        // Clear storage and redirect to login
+                        // Clear storage and trigger server-side logout
                         localStorage.removeItem(STORAGE_KEY);
-                        window.location.href = LOGIN_URL;
+                        
+                        // Submit the logout form to ensure session is destroyed on server
+                        const logoutForm = document.getElementById('logout-form-desktop');
+                        if (logoutForm) {
+                            logoutForm.submit();
+                        } else {
+                            // Fallback if form is not found
+                            window.location.href = "{% url 'logout' %}";
+                        }
                     }
                 }
             }
